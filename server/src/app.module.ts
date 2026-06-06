@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { getConnectionToken } from '@nestjs/mongoose';
 import { AuthModule } from '@thallesp/nestjs-better-auth';
+import { Connection } from 'mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { auth } from './auth';
@@ -21,22 +23,22 @@ import { SlackModule } from './slack/slack.module';
         abortEarly: true,
       },
     }),
+    MongodbModule,
     AuthModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        auth: auth(configService),
+      imports: [ConfigModule, MongodbModule],
+      useFactory: (configService: ConfigService, connection: Connection) => ({
+        auth: auth(configService, connection),
         bodyParser: {
           json: { limit: '2mb' },
           urlencoded: { limit: '2mb', extended: true },
           rawBody: true,
         },
       }),
-      inject: [ConfigService],
+      inject: [ConfigService, getConnectionToken()], //Ensure that the correct connection is injected
     }),
     SlackModule,
     MailModule,
     LeaveModule,
-    MongodbModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService],
