@@ -1,8 +1,8 @@
 'use client';
+import { authClient } from '@/lib/auth-client';
 import { Google } from '@/public/google';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod/v3';
@@ -25,8 +25,24 @@ const LoginForm = () => {
     },
   });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log('Form Data:', data);
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    await authClient.signIn.email({
+      email: data.email,
+      password: data.password,
+      callbackURL: '/dashboard',
+      rememberMe: true,
+      fetchOptions: {
+        onSuccess(context) {
+          toast.success('Login successful!');
+        },
+        onError(context) {
+          form.reset();
+          toast.error(
+            context.error.message || 'Login failed. Please try again.',
+          );
+        },
+      },
+    });
   }
 
   return (
@@ -94,12 +110,28 @@ const LoginForm = () => {
         </div>
 
         {/* SUBMIT */}
-        <Button  size="lg" type="submit" id="login_form">
+        <Button size="lg" type="submit" id="login_form">
           Sign In
         </Button>
 
         {/* GOOGLE */}
-        <Button variant="outline" type="button">
+        <Button onClick={() => {
+          authClient.signIn.social({
+            provider:"google",
+            callbackURL: '/dashboard',
+            fetchOptions:{
+              onSuccess(context) {
+                toast.success('Login successful!');
+                form.reset()
+              },
+              onError(context) {
+                toast.error(
+                  context.error.message || 'Login failed. Please try again.',
+                );
+              }
+            }
+          })
+        }} variant="outline" type="button">
           <Google />
           Login with Google
         </Button>
