@@ -1,6 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap");
-@import "tailwindcss";
-@import "tw-animate-css";
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -132,6 +132,10 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+html {
+  @apply scroll-smooth;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -141,5 +145,5 @@
   }
 }
 body {
-  font-family: "Figtree", sans-serif;
+  font-family: 'Figtree', sans-serif;
 }

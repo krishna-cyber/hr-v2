@@ -1,7 +1,8 @@
+import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import type { Metadata } from "next";
-import { Figtree, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import QueryProvider from "./query-provider";
 
 
 
@@ -18,17 +19,21 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`h-full antialiased scroll-smooth`}
+      className={`h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">    
+      <body className="min-h-full flex flex-col ">    
+        <QueryProvider>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="light"
             enableSystem
             disableTransitionOnChange
           >
             {children}
-          </ThemeProvider></body>
+          </ThemeProvider>
+        </QueryProvider>
+        <Toaster />
+        </body>
     </html>
   );
 }
