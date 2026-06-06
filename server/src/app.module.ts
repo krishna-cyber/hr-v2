@@ -5,10 +5,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { auth } from './auth';
 import { validate } from './env.validation';
+import { LeaveModule } from './leave/leave.module';
 import { MailModule } from './mail/mail.module';
 import { MailService } from './mail/mail.service';
+import { MongodbModule } from './mongodb.module';
 import { SlackModule } from './slack/slack.module';
-import { LeaveModule } from './leave/leave.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { LeaveModule } from './leave/leave.module';
     SlackModule,
     MailModule,
     LeaveModule,
+    MongodbModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService],

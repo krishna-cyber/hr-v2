@@ -13,3 +13,14 @@ export interface ForgotPasswordTemplateContext {
   firstName: string;
   code: string;
 }
+
+export enum LeaveType {
+  annual = 'annual',
+  sick = 'sick',
+  casual = 'casual',
+  maternity = 'maternity',
+  paternity = 'paternity',
+  work_from_home = 'work_from_home',
+  wedding = 'wedding',
+  mourning = 'mourning',
+}

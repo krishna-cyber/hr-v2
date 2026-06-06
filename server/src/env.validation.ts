@@ -17,7 +17,7 @@ enum Environment {
   Provision = 'provision',
 }
 
-class EnvironmentVariables {
+export class EnvironmentVariables {
   @IsString()
   @IsNotEmpty({ message: 'DB_URL is required' })
   DB_URL!: string;
