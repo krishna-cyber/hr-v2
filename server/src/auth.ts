@@ -1,6 +1,7 @@
 import { mongodbAdapter } from '@better-auth/mongo-adapter';
 import { ConfigService } from '@nestjs/config';
 import { betterAuth } from 'better-auth';
+import { emailOTP } from 'better-auth/plugins';
 import { Connection } from 'mongoose';
 
 export const auth = (configService: ConfigService, connection: Connection) => {
@@ -37,6 +38,18 @@ export const auth = (configService: ConfigService, connection: Connection) => {
           disableImplicitSignUp: true, // Disable automatic sign-up for new users
         },
       },
+
+      // Plugins
+      plugins: [
+        emailOTP({
+          async sendVerificationOTP({ email, otp, type }) {
+            if (type === 'change-email') {
+              console.log(`Sending OTP for email change to ${email}: ${otp}`);
+              await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate email sending delay
+            }
+          },
+        }),
+      ],
 
       // Enable session management with cookies
       session: {

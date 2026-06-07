@@ -23,14 +23,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col ">    
         <QueryProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
-          >
+         
             {children}
-          </ThemeProvider>
+       
         </QueryProvider>
         <Toaster />
         </body>
