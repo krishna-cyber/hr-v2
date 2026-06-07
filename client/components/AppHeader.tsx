@@ -1,6 +1,6 @@
 'use client';
 
-import { SessionUser } from '@/types/types';
+import { SessionUser, User } from '@/types/types';
 import { Bell } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import {
@@ -14,7 +14,7 @@ import { Button } from './ui/button';
 import { Separator } from './ui/separator';
 import { SidebarTrigger, useSidebar } from './ui/sidebar';
 
-const AppHeader = ({ user }: { user: SessionUser }) => {
+const AppHeader = ({ user }: { user: User }) => {
   const pathname = usePathname();
   const segments = pathname.split('/').filter(Boolean);
 
