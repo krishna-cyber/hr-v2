@@ -25,16 +25,20 @@ import { SlackModule } from './slack/slack.module';
     }),
     MongodbModule,
     AuthModule.forRootAsync({
-      imports: [ConfigModule, MongodbModule],
-      useFactory: (configService: ConfigService, connection: Connection) => ({
-        auth: auth(configService, connection),
+      imports: [ConfigModule],
+      useFactory: (
+        configService: ConfigService,
+        connection: Connection,
+        mailService: MailService,
+      ) => ({
+        auth: auth(configService, connection, mailService),
         bodyParser: {
           json: { limit: '2mb' },
           urlencoded: { limit: '2mb', extended: true },
           rawBody: true,
         },
       }),
-      inject: [ConfigService, getConnectionToken()], //Ensure that the correct connection is injected
+      inject: [ConfigService, getConnectionToken(), MailService], //Ensure that the correct connection is injected
     }),
     SlackModule,
     MailModule,

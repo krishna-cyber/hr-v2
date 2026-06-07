@@ -4,4 +4,16 @@ import { createAuthClient } from 'better-auth/react';
 export const authClient = createAuthClient({
   baseURL: 'http://localhost:4100', // The base URL of your auth server
   plugins: [emailOTPClient(), nextCookies()],
+
+  // Type infer based on server auth setup
+  $InferAuth: {
+    user: {
+      additionalFields: {
+        role: {
+          type: ['admin', 'hr', 'employee', 'supervisor', 'superAdmin'],
+          defaultValue: 'employee',
+        },
+      },
+    },
+  },
 });

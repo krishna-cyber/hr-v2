@@ -2,9 +2,15 @@ import { mongodbAdapter } from '@better-auth/mongo-adapter';
 import { ConfigService } from '@nestjs/config';
 import { betterAuth } from 'better-auth';
 import { emailOTP } from 'better-auth/plugins';
-import { Connection } from 'mongoose';
 
-export const auth = (configService: ConfigService, connection: Connection) => {
+import { Connection } from 'mongoose';
+import { MailService } from './mail/mail.service';
+
+export const auth = (
+  configService: ConfigService,
+  connection: Connection,
+  mailService: MailService,
+) => {
   console.log('Initializing authentication with the following configuration:');
   console.log(`BASE_URL: ${configService.get('BASE_URL')}`);
 
@@ -27,6 +33,40 @@ export const auth = (configService: ConfigService, connection: Connection) => {
       // Email and Password Authentication configuration
       emailAndPassword: {
         enabled: true,
+        autoSignIn: false,
+        requireEmailVerification: false,
+      },
+      emailVerification: {
+        sendOnSignUp: true,
+        autoSignInAfterVerification: true,
+        expiresIn: 60 * 60 * 24, //24 hours
+        async sendVerificationEmail({ user, token }) {
+          await mailService.sendWelcomeEmail(user.email, {
+            firstName: user.name,
+            email: user.email,
+            password: token,
+            loginUrl: `${configService.get('CLIENT_URL')}/verify-email?token=${token}`,
+          });
+        },
+        sendOnSignIn: false,
+
+        beforeEmailVerification(user, request) {
+          console.log(
+            `Before email verification for user ${user.email} with request:`,
+            request,
+          );
+          return Promise.resolve(); // Return false to prevent verification
+        },
+      },
+
+      user: {
+        additionalFields: {
+          role: {
+            type: ['admin', 'hr', 'employee', 'supervisor', 'superAdmin'],
+            defaultValue: 'employee',
+            required: true,
+          },
+        },
       },
 
       // Google OAuth configuration
