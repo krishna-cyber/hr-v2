@@ -132,10 +132,6 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-html {
-  @apply scroll-smooth;
-}
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
