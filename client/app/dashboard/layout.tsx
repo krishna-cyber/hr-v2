@@ -1,5 +1,6 @@
 import AppHeader from '@/components/AppHeader';
 import SidebarLogo from '@/components/SidebarLogo';
+import SidebarNav from '@/components/SidebarNav';
 import SidebarUserMenu from '@/components/SidebarUserMenu';
 import {
   Sidebar,
@@ -11,7 +12,7 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar';
 import { authClient } from '@/lib/auth-client';
-import { MenuItem } from '@/types/types';
+import { MenuGroup, Role } from '@/types/types';
 import {
   Bell,
   CalendarDays,
@@ -29,86 +30,222 @@ import {
 } from 'lucide-react';
 import { headers } from 'next/headers';
 
-const menuItems: MenuItem[] = [
+const menuItems: MenuGroup[] = [
   {
-    label: 'Dashboard',
-    icon: <LayoutDashboard size={18} />,
-    href: '/dashboard',
+    label: 'Overview',
+    roles: [
+      Role.admin,
+      Role.employee,
+      Role.supervisor,
+      Role.hr,
+      Role.superAdmin,
+    ],
+    items: [
+      {
+        label: 'Dashboard',
+        icon: <LayoutDashboard size={18} />,
+        href: '/dashboard',
+        roles: [
+          Role.admin,
+          Role.employee,
+          Role.supervisor,
+          Role.hr,
+          Role.superAdmin,
+        ],
+      },
+    ],
   },
 
-  // Employee
   {
-    label: 'Apply Leave',
-    icon: <CalendarDays size={18} />,
-    href: '/dashboard/employee/leave',
-  },
-  {
-    label: 'Leave History',
-    icon: <History size={18} />,
-    href: '/dashboard/employee/leave-history',
-  },
-  {
-    label: 'My Leaves',
-    icon: <ClipboardList size={18} />,
-    href: '/dashboard/employee/my-leaves',
-  },
-  {
-    label: 'Profile',
-    icon: <User size={18} />,
-    href: '/dashboard/employee/profile',
-  },
-  {
-    label: 'Settings',
-    icon: <Settings size={18} />,
-    href: '/dashboard/employee/setting',
-  },
-
-  // Admin / HR
-  {
-    label: 'Employees',
-    icon: <Users size={18} />,
-    href: '/dashboard/admin/employees',
-  },
-  {
-    label: 'Add Employee',
-    icon: <UserPlus size={18} />,
-    href: '/dashboard/admin/addemployee',
-  },
-  {
-    label: 'Leave Requests',
-    icon: <ClipboardList size={18} />,
-    href: '/dashboard/admin/leave-request',
-  },
-  {
-    label: 'Terminated Employees',
-    icon: <UserX size={18} />,
-    href: '/dashboard/admin/terminated-employees',
-  },
-
-  // Feedback
-  {
-    label: 'Feedback',
-    icon: <MessageSquare size={18} />,
-    href: '/dashboard/feedback',
+    label: 'Management',
+    roles: [
+      Role.admin,
+      Role.hr,
+      Role.supervisor,
+      Role.superAdmin,
+      Role.employee,
+    ],
+    items: [
+      {
+        label: 'Employees',
+        icon: <Users size={18} />,
+        href: '/dashboard/employees',
+        roles: [Role.admin, Role.hr, Role.superAdmin],
+      },
+      {
+        label: 'Add Employee',
+        icon: <UserPlus size={18} />,
+        href: '/dashboard/addemployee',
+        roles: [Role.admin, Role.hr, Role.superAdmin],
+      },
+      {
+        label: 'Leave Requests',
+        icon: <ClipboardList size={18} />,
+        href: '/dashboard/leave-request',
+        roles: [Role.supervisor, Role.hr, Role.admin, Role.superAdmin],
+      },
+      {
+        label: 'Onboarding',
+        icon: <FileText size={18} />,
+        href: '/dashboard/onboarding',
+        roles: [Role.hr],
+      },
+      {
+        label: 'Exit Forms',
+        icon: <LogOut size={18} />,
+        href: '/dashboard/exit-form',
+        roles: [
+          Role.admin,
+          Role.hr,
+          Role.superAdmin,
+          Role.supervisor,
+          Role.employee,
+        ],
+      },
+    ],
   },
 
-  // HR
   {
-    label: 'Onboarding',
-    icon: <FileText size={18} />,
-    href: '/dashboard/hr/onboarding',
+    label: 'Leave Management',
+    roles: [
+      Role.hr,
+      Role.supervisor,
+      Role.employee,
+      Role.admin,
+      Role.superAdmin,
+    ],
+    items: [
+      {
+        label: 'Apply Leave',
+        icon: <CalendarDays size={18} />,
+        href: '/dashboard/leave',
+        roles: [
+          Role.hr,
+          Role.supervisor,
+          Role.employee,
+          Role.admin,
+          Role.superAdmin,
+        ],
+      },
+      {
+        label: 'Leave History',
+        icon: <History size={18} />,
+        href: '/dashboard/leave-history',
+        roles: [
+          Role.hr,
+          Role.supervisor,
+          Role.employee,
+          Role.admin,
+          Role.superAdmin,
+        ],
+      },
+      {
+        label: 'My Leaves',
+        icon: <ClipboardList size={18} />,
+        href: '/dashboard/my-leaves',
+        roles: [Role.supervisor, Role.employee, Role.admin, Role.superAdmin],
+      },
+    ],
   },
 
-  // Common
   {
-    label: 'Notifications',
-    icon: <Bell size={18} />,
-    href: '/dashboard/notifications',
+    label: 'Communication',
+    roles: [
+      Role.admin,
+      Role.hr,
+      Role.supervisor,
+      Role.employee,
+      Role.superAdmin,
+    ],
+    items: [
+      {
+        label: 'Notifications',
+        icon: <Bell size={18} />,
+        href: '/dashboard/notifications',
+        roles: [
+          Role.admin,
+          Role.hr,
+          Role.supervisor,
+          Role.employee,
+          Role.superAdmin,
+        ],
+      },
+      {
+        label: 'Feedback',
+        icon: <MessageSquare size={18} />,
+        href: '/dashboard/feedback',
+        roles: [Role.admin, Role.hr, Role.supervisor, Role.superAdmin],
+      },
+    ],
   },
+
   {
-    label: 'Exit Forms',
-    icon: <LogOut size={18} />,
-    href: '/dashboard/exit-form',
+    label: 'My Account',
+    roles: [
+      Role.admin,
+      Role.hr,
+      Role.supervisor,
+      Role.employee,
+      Role.superAdmin,
+    ],
+    items: [
+      {
+        label: 'Profile',
+        icon: <User size={18} />,
+        href: '/dashboard/profile',
+        roles: [
+          Role.admin,
+          Role.hr,
+          Role.supervisor,
+          Role.employee,
+          Role.superAdmin,
+        ],
+      },
+    ],
+  },
+
+  {
+    label: 'Preferences',
+    roles: [
+      Role.admin,
+      Role.hr,
+      Role.supervisor,
+      Role.employee,
+      Role.superAdmin,
+    ],
+    items: [
+      {
+        label: 'Settings',
+        icon: <Settings size={18} />,
+        href: '/dashboard/setting',
+        roles: [
+          Role.admin,
+          Role.hr,
+          Role.supervisor,
+          Role.employee,
+          Role.superAdmin,
+        ],
+      },
+    ],
+  },
+
+  {
+    label: 'Miscellaneous',
+    roles: [
+      Role.admin,
+      Role.hr,
+      Role.superAdmin,
+      Role.supervisor,
+      Role.employee,
+    ],
+    items: [
+      {
+        label: 'Terminated Employees',
+        icon: <UserX size={18} />,
+        href: '/dashboard/terminated-employees',
+        roles: [Role.admin, Role.hr, Role.superAdmin],
+      },
+    ],
   },
 ];
 
@@ -120,6 +257,15 @@ const layout = async ({
   const { data } = await authClient.getSession({
     fetchOptions: { headers: await headers() },
   });
+
+  const userRole = data?.user?.role as Role;
+
+  const filteredMenuItems = menuItems
+    .filter((group) => group.roles.includes(userRole))
+    .map((group) => ({
+      ...group,
+      items: group.items.filter((item) => item.roles.includes(userRole)),
+    }));
 
   return (
     <SidebarProvider
@@ -134,7 +280,7 @@ const layout = async ({
 
           {/* Navigation */}
           <SidebarContent className="px-3">
-            {/* <SidebarNav groups={navGroups as any} /> */}
+            <SidebarNav menuItems={filteredMenuItems} />
           </SidebarContent>
 
           {/* Footer User Menu */}

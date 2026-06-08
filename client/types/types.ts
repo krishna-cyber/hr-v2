@@ -6,8 +6,23 @@ export type SessionUser = User & {
 
 export type User = typeof authClient.$Infer.Session.user;
 
-export interface MenuItem {
+export enum Role {
+  admin = 'admin',
+  hr = 'hr',
+  supervisor = 'supervisor',
+  employee = 'employee',
+  superAdmin = 'superAdmin',
+}
+
+export type MenuItem = {
   label: string;
   icon: React.ReactNode;
   href: string;
-}
+  roles: Role[];
+};
+
+export type MenuGroup = {
+  label: string;
+  roles: Role[];
+  items: MenuItem[];
+};

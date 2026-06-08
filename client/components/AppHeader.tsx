@@ -33,7 +33,7 @@ const AppHeader = ({ user }: { user: User }) => {
           {segments.map((segment, index) => {
             return (
               <>
-                <BreadcrumbItem key={segment}>
+                <BreadcrumbItem key={segment + index}>
                   <BreadcrumbLink
                     href={`/${segments.slice(0, index + 1).join('/')}`}
                   >
