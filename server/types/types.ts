@@ -24,3 +24,11 @@ export enum LeaveType {
   wedding = 'wedding',
   mourning = 'mourning',
 }
+
+export enum Role {
+  admin = 'admin',
+  hr = 'hr',
+  supervisor = 'supervisor',
+  employee = 'employee',
+  superAdmin = 'superAdmin',
+}
