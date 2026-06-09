@@ -188,17 +188,24 @@ export class AdminService {
         employeeId: { $in: employeeIds },
       });
 
-      const transFormedData = users.map((user) => ({
-        name: user.name,
-        _id: user._id,
-        avatar: user?.image || '',
-        department: employees.find(
-          (emp) => String(emp._id) === String(user.employeeId),
-        )?.department,
-        dob: employees.find(
-          (emp) => String(emp._id) === String(user.employeeId),
-        )?.dob,
-      }));
+      //Transformed data and sorting by date of birth
+      const transFormedData = users
+        .map((user) => ({
+          name: user.name,
+          _id: user._id,
+          avatar: user?.image || '',
+          department: employees.find(
+            (emp) => String(emp._id) === String(user.employeeId),
+          )?.department,
+          dob: employees.find(
+            (emp) => String(emp._id) === String(user.employeeId),
+          )?.dob,
+        }))
+        .sort((a, b) => {
+          const dateA = new Date(a.dob ?? 0);
+          const dateB = new Date(b.dob ?? 0);
+          return dateA.getTime() - dateB.getTime();
+        });
 
       return {
         success: true,
