@@ -91,6 +91,7 @@ export class AdminService {
     }
   }
 
+  //completed
   async updateEmployee(id: string, updateEmployeeDto: UpdateEmployeeDto) {
     try {
       await this.employeeModel.findByIdAndUpdate(id, updateEmployeeDto, {

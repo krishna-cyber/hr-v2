@@ -5,7 +5,6 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
   Put,
   Request,
@@ -103,14 +102,6 @@ export class AdminController {
       throw new BadRequestException('Invalid employee ID format');
     }
     return this.adminService.updateEmployee(id, updateEmployeeDto);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateEmployeeDto: UpdateEmployeeDto,
-  ) {
-    return this.adminService.update(+id, updateEmployeeDto);
   }
 
   @Delete(':id')
