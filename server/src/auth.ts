@@ -66,6 +66,11 @@ export const auth = (
             defaultValue: 'employee',
             required: true,
           },
+          employeeId: {
+            type: 'string',
+            required: false,
+            defaultValue: null,
+          },
         },
       },
 

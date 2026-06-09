@@ -12,6 +12,7 @@ import { MailModule } from './mail/mail.module';
 import { MailService } from './mail/mail.service';
 import { MongodbModule } from './mongodb.module';
 import { SlackModule } from './slack/slack.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { SlackModule } from './slack/slack.module';
     SlackModule,
     MailModule,
     LeaveModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService, MailService],
