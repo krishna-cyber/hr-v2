@@ -2,7 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "version": "1.0",
-    "title": "HR_v2"
+    "title": "HR_v2",
+    "description": "HR system\n"
   },
   "servers": [
     {
@@ -156,7 +157,7 @@
         ]
       }
     },
-    "/user": {
+    "/api/auth/sign-up/email": {
       "post": {
         "summary": "Create New User",
         "description": "Create a new user.",
@@ -168,25 +169,38 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "firstName": {
+                  "name": {
                     "type": "string"
                   },
-                  "lastName": {
+                  "password": {
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "callbackURL": {
                     "type": "string"
                   },
                   "email": {
                     "type": "string"
                   },
-                  "dateOfBirth": {
-                    "type": "string",
-                    "format": "date"
+                  "role": {
+                    "type": "string"
                   }
                 },
                 "required": [
-                  "firstName",
-                  "lastName",
+                  "name",
+                  "password",
+                  "email"
+                ],
+                "x-apidog-orders": [
+                  "name",
                   "email",
-                  "dateOfBirth"
+                  "password",
+                  "image",
+                  "callbackURL",
+                  "role"
                 ]
               },
               "examples": {
@@ -238,6 +252,1076 @@
             "url": "http://localhost:3000"
           }
         ]
+      }
+    },
+    "/api/auth": {
+      "get": {
+        "summary": "New endpoint",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/auth/sign-in/email": {
+      "post": {
+        "summary": "Sign in with email and password",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        },
+        "description": "Sign in with email",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "x-apidog-orders": [
+                  "email",
+                  "password"
+                ],
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test": {
+      "get": {
+        "summary": "Test Endpoint",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        },
+        "description": "This is a test endpoint.",
+        "operationId": "/test",
+        "tags": [
+          "/test"
+        ]
+      }
+    },
+    "/api/admin/create-employee": {
+      "post": {
+        "summary": "Create an employee",
+        "description": "Creates a new employee with all personal, employment, and document details.",
+        "operationId": "createEmployee",
+        "requestBody": {
+          "required": true,
+          "description": "Complete employee details payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Employee's email address (must be unique)"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Full name of the employee"
+                  },
+                  "dob": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Date of birth (YYYY-MM-DD)"
+                  },
+                  "gender": {
+                    "type": "string",
+                    "enum": [
+                      "male",
+                      "female",
+                      "other"
+                    ],
+                    "description": "Gender of the employee"
+                  },
+                  "contact": {
+                    "type": "string",
+                    "description": "Primary contact number"
+                  },
+                  "emergencyContact": {
+                    "type": "string",
+                    "description": "Emergency contact number"
+                  },
+                  "emergencyContactRelation": {
+                    "type": "string",
+                    "description": "Relationship with emergency contact"
+                  },
+                  "emergencyContactName": {
+                    "type": "string",
+                    "description": "Name of emergency contact person"
+                  },
+                  "bloodGroup": {
+                    "type": "string",
+                    "enum": [
+                      "A+",
+                      "A-",
+                      "B+",
+                      "B-",
+                      "AB+",
+                      "AB-",
+                      "O+",
+                      "O-"
+                    ],
+                    "description": "Blood group of the employee"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "admin",
+                      "hr",
+                      "supervisor",
+                      "employee",
+                      "superAdmin"
+                    ],
+                    "description": "Role assigned to the employee"
+                  },
+                  "address": {
+                    "type": "string",
+                    "description": "Residential address"
+                  },
+                  "employeeType": {
+                    "type": "string",
+                    "description": "Type of employment (full_time, part_time, contract, intern, remote)",
+                    "enum": [
+                      "full-time",
+                      "part-time",
+                      "contract",
+                      "intern",
+                      "probation"
+                    ],
+                    "x-apidog-enum": [
+                      {
+                        "value": "full-time",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "part-time",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "contract",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "intern",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "probation",
+                        "name": "",
+                        "description": ""
+                      }
+                    ]
+                  },
+                  "department": {
+                    "type": "string",
+                    "description": "Department assigned (engineering, hr, sales, marketing, finance, operations)",
+                    "enum": [
+                      "hr",
+                      "AI/ML",
+                      "Full Stack Developer",
+                      "QA",
+                      "marketing",
+                      "sales",
+                      "operations",
+                      "finance",
+                      "other"
+                    ],
+                    "x-apidog-enum": [
+                      {
+                        "value": "hr",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "AI/ML",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "Full Stack Developer",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "QA",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "marketing",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "sales",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "operations",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "finance",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "other",
+                        "name": "",
+                        "description": ""
+                      }
+                    ]
+                  },
+                  "dateOfJoining": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Date when employee joined the company"
+                  },
+                  "employmentStartDate": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Official employment start date"
+                  },
+                  "employmentStartAs": {
+                    "type": "string",
+                    "description": "Position/role at start of employment",
+                    "enum": [
+                      "full-time",
+                      "part-time",
+                      "contract",
+                      "intern",
+                      "probation"
+                    ],
+                    "x-apidog-enum": [
+                      {
+                        "value": "full-time",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "part-time",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "contract",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "intern",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "probation",
+                        "name": "",
+                        "description": ""
+                      }
+                    ]
+                  },
+                  "employeeStatus": {
+                    "type": "string",
+                    "description": "Current employment status (active, inactive, on_leave, terminated)"
+                  },
+                  "salary": {
+                    "type": "number",
+                    "description": "Annual or monthly salary amount"
+                  },
+                  "bankAccount": {
+                    "type": "string",
+                    "description": "Bank account number"
+                  },
+                  "bankName": {
+                    "type": "string",
+                    "description": "Name of the bank"
+                  },
+                  "panNumber": {
+                    "type": "string",
+                    "description": "PAN (Permanent Account Number) for tax purposes"
+                  },
+                  "citizenshipNumber": {
+                    "type": "string",
+                    "description": "Citizenship/identification number"
+                  },
+                  "citizenshipFrontPhoto": {
+                    "type": "string",
+                    "description": "URL or path to citizenship front photo"
+                  },
+                  "citizenshipBackPhoto": {
+                    "type": "string",
+                    "description": "URL or path to citizenship back photo"
+                  },
+                  "profilePhoto": {
+                    "type": "string",
+                    "description": "URL or path to employee profile photo"
+                  },
+                  "panPhoto": {
+                    "type": "string",
+                    "description": "URL or path to PAN card photo"
+                  },
+                  "github": {
+                    "type": "string",
+                    "description": "GitHub profile URL or username"
+                  },
+                  "signaturePhoto": {
+                    "type": "string",
+                    "description": "URL or path to employee signature"
+                  },
+                  "internshipDurationMonths": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 6,
+                    "description": "Duration of internship in months (applicable for interns only)"
+                  },
+                  "internshipEndingReminderSent": {
+                    "type": "boolean",
+                    "description": "Flag indicating if internship ending reminder has been sent"
+                  }
+                },
+                "required": [
+                  "email",
+                  "name",
+                  "dob",
+                  "gender",
+                  "contact",
+                  "address",
+                  "role",
+                  "employeeType",
+                  "department",
+                  "employmentStartDate",
+                  "employmentStartAs",
+                  "employeeStatus",
+                  "salary",
+                  "bankAccount",
+                  "bankName",
+                  "panNumber",
+                  "citizenshipNumber"
+                ],
+                "x-apidog-orders": [
+                  "email",
+                  "name",
+                  "dob",
+                  "gender",
+                  "contact",
+                  "emergencyContact",
+                  "emergencyContactRelation",
+                  "emergencyContactName",
+                  "bloodGroup",
+                  "role",
+                  "address",
+                  "employeeType",
+                  "department",
+                  "dateOfJoining",
+                  "employmentStartDate",
+                  "employmentStartAs",
+                  "employeeStatus",
+                  "salary",
+                  "bankAccount",
+                  "bankName",
+                  "panNumber",
+                  "citizenshipNumber",
+                  "citizenshipFrontPhoto",
+                  "citizenshipBackPhoto",
+                  "profilePhoto",
+                  "panPhoto",
+                  "github",
+                  "signaturePhoto",
+                  "internshipDurationMonths",
+                  "internshipEndingReminderSent"
+                ]
+              },
+              "examples": {
+                "Full Time Employee": {
+                  "summary": "Create a full-time software engineer",
+                  "value": {
+                    "email": "john.doe@company.com",
+                    "name": "John Doe",
+                    "dob": "1995-06-15",
+                    "gender": "male",
+                    "contact": "+977-9851234567",
+                    "emergencyContact": "+977-9812345678",
+                    "emergencyContactRelation": "Spouse",
+                    "emergencyContactName": "Jane Doe",
+                    "bloodGroup": "O+",
+                    "role": "employee",
+                    "address": "Kathmandu, Nepal",
+                    "employeeType": "full_time",
+                    "department": "engineering",
+                    "dateOfJoining": "2024-01-15",
+                    "employmentStartDate": "2024-01-15",
+                    "employmentStartAs": "Software Engineer",
+                    "employeeStatus": "active",
+                    "salary": 1200000,
+                    "bankAccount": "1234567890",
+                    "bankName": "NMB Bank",
+                    "panNumber": "123456789",
+                    "citizenshipNumber": "01-01-1234567",
+                    "github": "johndoe",
+                    "profilePhoto": "/uploads/profile/john_doe.jpg"
+                  }
+                },
+                "Intern Employee": {
+                  "summary": "Create an intern employee",
+                  "value": {
+                    "email": "alice.smith@company.com",
+                    "name": "Alice Smith",
+                    "dob": "2000-03-22",
+                    "gender": "female",
+                    "contact": "+977-9841234567",
+                    "address": "Lalitpur, Nepal",
+                    "role": "employee",
+                    "employeeType": "intern",
+                    "department": "marketing",
+                    "employmentStartDate": "2024-03-01",
+                    "employmentStartAs": "Marketing Intern",
+                    "employeeStatus": "active",
+                    "salary": 300000,
+                    "bankAccount": "9876543210",
+                    "bankName": "Prabhu Bank",
+                    "panNumber": "987654321",
+                    "citizenshipNumber": "02-03-7654321",
+                    "internshipDurationMonths": 3,
+                    "internshipEndingReminderSent": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Employee created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Employee created successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "dob": {
+                          "type": "string",
+                          "format": "date"
+                        },
+                        "gender": {
+                          "type": "string"
+                        },
+                        "contact": {
+                          "type": "string"
+                        },
+                        "address": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string"
+                        },
+                        "employeeType": {
+                          "type": "string"
+                        },
+                        "department": {
+                          "type": "string"
+                        },
+                        "employeeStatus": {
+                          "type": "string"
+                        },
+                        "salary": {
+                          "type": "number"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "statusCode": 200,
+                  "message": "Employee created successfully",
+                  "data": {
+                    "id": 1,
+                    "email": "john.doe@company.com",
+                    "name": "John Doe",
+                    "dob": "1995-06-15",
+                    "gender": "male",
+                    "contact": "+977-9851234567",
+                    "address": "Kathmandu, Nepal",
+                    "role": "employee",
+                    "employeeType": "full_time",
+                    "department": "engineering",
+                    "employeeStatus": "active",
+                    "salary": 1200000,
+                    "createdAt": "2024-01-15T10:30:00.000Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Missing required fields or validation failed",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 400,
+                  "message": [
+                    "email must be an email",
+                    "salary must be a number"
+                  ],
+                  "error": "Bad Request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required"
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions (Admin/SuperAdmin only)"
+          },
+          "409": {
+            "description": "Conflict - Email already exists",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 409,
+                  "message": "Employee with email john.doe@company.com already exists",
+                  "error": "Conflict"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/admin/update-employee/{id}": {
+      "put": {
+        "summary": "Update an employee",
+        "description": "Updates an existing employee's details. All fields are optional - only provided fields will be updated.",
+        "operationId": "updateEmployee",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Employee ID (MongoDB ObjectId)",
+            "schema": {
+              "type": "string",
+              "example": "507f1f77bcf86cd799439011"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Employee details to update (all fields optional)",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Employee's email address (must be unique)"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Full name of the employee"
+                  },
+                  "dob": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Date of birth (YYYY-MM-DD)"
+                  },
+                  "gender": {
+                    "type": "string",
+                    "enum": [
+                      "male",
+                      "female",
+                      "other"
+                    ],
+                    "description": "Gender of the employee"
+                  },
+                  "contact": {
+                    "type": "string",
+                    "description": "Primary contact number"
+                  },
+                  "emergencyContact": {
+                    "type": "string",
+                    "description": "Emergency contact number"
+                  },
+                  "emergencyContactRelation": {
+                    "type": "string",
+                    "description": "Relationship with emergency contact"
+                  },
+                  "emergencyContactName": {
+                    "type": "string",
+                    "description": "Name of emergency contact person"
+                  },
+                  "bloodGroup": {
+                    "type": "string",
+                    "enum": [
+                      "A+",
+                      "A-",
+                      "B+",
+                      "B-",
+                      "AB+",
+                      "AB-",
+                      "O+",
+                      "O-"
+                    ],
+                    "description": "Blood group of the employee"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "admin",
+                      "hr",
+                      "supervisor",
+                      "employee",
+                      "superAdmin"
+                    ],
+                    "description": "Role assigned to the employee"
+                  },
+                  "address": {
+                    "type": "string",
+                    "description": "Residential address"
+                  },
+                  "employeeType": {
+                    "type": "string",
+                    "enum": [
+                      "full-time",
+                      "part-time",
+                      "contract",
+                      "intern",
+                      "probation"
+                    ],
+                    "description": "Type of employment"
+                  },
+                  "department": {
+                    "type": "string",
+                    "enum": [
+                      "hr",
+                      "AI/ML",
+                      "Full Stack Developer",
+                      "QA",
+                      "marketing",
+                      "sales",
+                      "operations",
+                      "finance",
+                      "other"
+                    ],
+                    "description": "Department assigned"
+                  },
+                  "dateOfJoining": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Date when employee joined the company"
+                  },
+                  "employmentStartDate": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Official employment start date"
+                  },
+                  "employmentStartAs": {
+                    "type": "string",
+                    "enum": [
+                      "full-time",
+                      "part-time",
+                      "contract",
+                      "intern",
+                      "probation"
+                    ],
+                    "description": "Position/role at start of employment"
+                  },
+                  "employeeStatus": {
+                    "type": "string",
+                    "enum": [
+                      "active",
+                      "inactive",
+                      "on_leave",
+                      "terminated"
+                    ],
+                    "description": "Current employment status"
+                  },
+                  "salary": {
+                    "type": "number",
+                    "description": "Annual or monthly salary amount"
+                  },
+                  "bankAccount": {
+                    "type": "string",
+                    "description": "Bank account number"
+                  },
+                  "bankName": {
+                    "type": "string",
+                    "description": "Name of the bank"
+                  },
+                  "panNumber": {
+                    "type": "string",
+                    "description": "PAN (Permanent Account Number) for tax purposes"
+                  },
+                  "citizenshipNumber": {
+                    "type": "string",
+                    "description": "Citizenship/identification number"
+                  },
+                  "citizenshipFrontPhoto": {
+                    "type": "string",
+                    "description": "URL or path to citizenship front photo"
+                  },
+                  "citizenshipBackPhoto": {
+                    "type": "string",
+                    "description": "URL or path to citizenship back photo"
+                  },
+                  "profilePhoto": {
+                    "type": "string",
+                    "description": "URL or path to employee profile photo"
+                  },
+                  "panPhoto": {
+                    "type": "string",
+                    "description": "URL or path to PAN card photo"
+                  },
+                  "github": {
+                    "type": "string",
+                    "description": "GitHub profile URL or username"
+                  },
+                  "signaturePhoto": {
+                    "type": "string",
+                    "description": "URL or path to employee signature"
+                  },
+                  "internshipDurationMonths": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 6,
+                    "description": "Duration of internship in months (applicable for interns only)"
+                  },
+                  "internshipEndingReminderSent": {
+                    "type": "boolean",
+                    "description": "Flag indicating if internship ending reminder has been sent"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "examples": {
+                "Update Employee Basic Info": {
+                  "summary": "Update name and contact",
+                  "value": {
+                    "name": "Johnathan Doe",
+                    "contact": "+977-9851234568",
+                    "address": "Lalitpur, Nepal"
+                  }
+                },
+                "Update Employment Status": {
+                  "summary": "Promote employee",
+                  "value": {
+                    "role": "supervisor",
+                    "salary": 1800000,
+                    "employeeStatus": "active"
+                  }
+                },
+                "Update Department": {
+                  "summary": "Change department",
+                  "value": {
+                    "department": "AI/ML",
+                    "employeeType": "full-time"
+                  }
+                },
+                "Update Internship Details": {
+                  "summary": "Update intern",
+                  "value": {
+                    "internshipDurationMonths": 4,
+                    "internshipEndingReminderSent": true
+                  }
+                },
+                "Update All Documents": {
+                  "summary": "Update document photos",
+                  "value": {
+                    "citizenshipFrontPhoto": "/uploads/citizenship/front_new.jpg",
+                    "citizenshipBackPhoto": "/uploads/citizenship/back_new.jpg",
+                    "profilePhoto": "/uploads/profile/new_photo.jpg",
+                    "panPhoto": "/uploads/pan/new_pan.jpg",
+                    "signaturePhoto": "/uploads/signature/new_sig.jpg"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Employee updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "examples": [
+                        "Employee updated successfully"
+                      ]
+                    }
+                  },
+                  "x-apidog-orders": [
+                    "success",
+                    "message"
+                  ]
+                },
+                "examples": {
+                  "Success Response": {
+                    "value": {
+                      "success": true,
+                      "message": "Employee updated successfully",
+                      "data": {
+                        "id": "507f1f77bcf86cd799439011",
+                        "email": "john.doe@company.com",
+                        "name": "Johnathan Doe",
+                        "updatedAt": "2026-06-09T12:00:00.000Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid input or validation failed",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Validation Error": {
+                    "value": {
+                      "statusCode": 400,
+                      "message": [
+                        "email must be an email",
+                        "salary must be a number"
+                      ],
+                      "error": "Bad Request"
+                    }
+                  },
+                  "Invalid ID Format": {
+                    "value": {
+                      "statusCode": 400,
+                      "message": "Invalid employee ID format",
+                      "error": "Bad Request"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions (Admin/SuperAdmin only)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 403,
+                  "message": "Forbidden resource",
+                  "error": "Forbidden"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Employee with given ID does not exist",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "Employee with ID 507f1f77bcf86cd799439011 not found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict - Email already exists (if updating email)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 409,
+                  "message": "Employee with email john.doe@company.com already exists",
+                  "error": "Conflict"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity - Failed to update employee",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 422,
+                  "message": "Failed to update employee",
+                  "error": "Unprocessable Entity"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 500,
+                  "message": "Internal server error",
+                  "error": "Internal Server Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/admin/dashboard/stats": {
+      "get": {
+        "summary": "Get Dashboard stats",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/admin/dashboard/birthdays": {
+      "get": {
+        "summary": "Get birthdays of upcoming 7 days",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "avatar": {
+                            "type": "string"
+                          },
+                          "department": {
+                            "type": "string"
+                          },
+                          "dob": {
+                            "type": "string"
+                          }
+                        },
+                        "x-apidog-orders": [
+                          "name",
+                          "avatar",
+                          "department",
+                          "dob"
+                        ],
+                        "required": [
+                          "name",
+                          "avatar",
+                          "department",
+                          "dob"
+                        ]
+                      }
+                    }
+                  },
+                  "x-apidog-orders": [
+                    "success",
+                    "data"
+                  ],
+                  "required": [
+                    "success",
+                    "data"
+                  ]
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "success": true,
+                      "data": [
+                        {
+                          "name": "alex.thapa",
+                          "avatar": "",
+                          "department": "Full Stack Developer",
+                          "dob": "1988-06-15T00:00:00.000Z"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
