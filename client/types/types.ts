@@ -5,6 +5,13 @@ export type SessionUser = User & {
 };
 
 export type User = typeof authClient.$Infer.Session.user;
+export interface UpcommingBirthday {
+  id: string;
+  name: string;
+  birthday: string;
+  department: string;
+  avatar?: string;
+}
 
 export enum Role {
   admin = 'admin',
