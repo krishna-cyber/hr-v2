@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import {
   ForgotPasswordTemplateContext,
   OtpTemplateContext,
+  VerifyEmailContext,
   WelcomeTemplateContext,
 } from 'types/types';
 
@@ -24,6 +25,19 @@ export class MailService {
         email: context.email,
         password: context.password,
         loginUrl: context.loginUrl,
+      },
+    });
+  }
+
+  async sendVerifyEmail(to: string, context: VerifyEmailContext) {
+    await this.mailerService.sendMail({
+      to,
+      subject: 'Welcome to Palmmind!',
+      template: 'verifyemail',
+      context: {
+        firstName: context.firstName,
+        email: context.email,
+        logiverificationlink: context.logiverificationlink,
       },
     });
   }

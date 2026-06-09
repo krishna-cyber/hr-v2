@@ -6,6 +6,11 @@ export interface OtpTemplateContext {
   otp: string;
 }
 
+export interface VerifyEmailContext {
+  firstName: string;
+  email: string;
+  logiverificationlink: string;
+}
 export interface WelcomeTemplateContext {
   firstName: string;
   email: string;

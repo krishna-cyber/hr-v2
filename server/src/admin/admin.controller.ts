@@ -17,7 +17,6 @@ import { type AuthenticatedRequest, Role } from 'types/types';
 import { AdminService } from './admin.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
-import { User } from './schemas/user.schema';
 
 @Roles([Role.admin, Role.hr, Role.superAdmin])
 @Controller('api/admin')
@@ -96,11 +95,14 @@ export class AdminController {
   }
 
   @Put('/update-employee/:id')
-  updateEmployee(@Param('id') id: string) {
+  updateEmployee(
+    @Param('id') id: string,
+    @Body() updateEmployeeDto: UpdateEmployeeDto,
+  ) {
     if (mongoose.Types.ObjectId.isValid(id)) {
       throw new BadRequestException('Invalid employee ID format');
     }
-    return this.adminService.updateEmployee();
+    return this.adminService.updateEmployee(id, updateEmployeeDto);
   }
 
   @Patch(':id')

@@ -4,6 +4,8 @@ import { betterAuth } from 'better-auth';
 import { emailOTP } from 'better-auth/plugins';
 
 import { Connection } from 'mongoose';
+import { Role } from 'types/types';
+import { User } from './admin/schemas/user.schema';
 import { MailService } from './mail/mail.service';
 
 export const auth = (
@@ -41,22 +43,18 @@ export const auth = (
         autoSignInAfterVerification: true,
         expiresIn: 60 * 60 * 24, //24 hours
         async sendVerificationEmail({ user, token }) {
-          await mailService.sendWelcomeEmail(user.email, {
-            firstName: user.name,
-            email: user.email,
-            password: token,
-            loginUrl: `${configService.get('CLIENT_URL')}/verify-email?token=${token}`,
-          });
+          const userCreated = user as unknown as User;
+
+          //verification send only if user is hr
+          if (userCreated?.role == Role.hr) {
+            await mailService.sendVerifyEmail(user.email, {
+              firstName: user.name,
+              email: user.email,
+              logiverificationlink: `${configService.get('CLIENT_URL')}?token=${token}`,
+            });
+          }
         },
         sendOnSignIn: false,
-
-        beforeEmailVerification(user, request) {
-          console.log(
-            `Before email verification for user ${user.email} with request:`,
-            request,
-          );
-          return Promise.resolve(); // Return false to prevent verification
-        },
       },
 
       user: {

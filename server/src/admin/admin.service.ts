@@ -60,8 +60,7 @@ export class AdminService {
           image: '',
         },
       });
-      console.log(`userId`, user.user.id);
-      console.log(`employeeId`, employee._id);
+
       await this.userModel.findByIdAndUpdate(
         new mongoose.Types.ObjectId(user.user.id),
         {
@@ -92,8 +91,25 @@ export class AdminService {
     }
   }
 
-  updateEmployee() {
-    return 'This action updates a employee';
+  async updateEmployee(id: string, updateEmployeeDto: UpdateEmployeeDto) {
+    try {
+      await this.employeeModel.findByIdAndUpdate(id, updateEmployeeDto, {
+        new: true,
+      });
+
+      return {
+        success: true,
+        message: 'Employee updated successfully',
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      console.log(error);
+      throw new InternalServerErrorException('Failed to create employee', {
+        cause: error,
+      });
+    }
   }
 
   async getDashboardStats(user: User) {
@@ -204,10 +220,6 @@ export class AdminService {
 
   findOne(id: number) {
     return `This action returns a #${id} employee`;
-  }
-
-  update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
-    return `This action updates a #${id} employee`;
   }
 
   remove(id: number) {
