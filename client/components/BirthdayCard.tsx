@@ -34,8 +34,7 @@ const BirthdayCard = async () => {
           </div>
         </div>
         <span className="text-xs text-gray-500">
-          {/* {sortedEmployees.length} upcoming */}
-          10
+          {`Showing ${birthdayData.length} ${birthdayData.length === 1 ? 'birthday' : 'birthdays'}`}
         </span>
       </div>
 

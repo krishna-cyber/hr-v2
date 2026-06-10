@@ -53,12 +53,14 @@ export class Leave {
   @Prop({ type: Boolean, default: true })
   isPaid!: boolean;
 
+  @Prop({ type: String, default: null })
   slackMetadata!: string;
 
   @Prop({ type: String, enum: ['first_half', 'second_half'], default: null })
   halfDayPeriod!: string;
 
-  comments!: string;
+  @Prop({ type: [String], default: [] })
+  comments!: string[];
 }
 
 export const LeaveSchema = SchemaFactory.createForClass(Leave);

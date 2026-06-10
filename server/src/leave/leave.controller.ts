@@ -6,7 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  Req,
 } from '@nestjs/common';
+import { Roles } from '@thallesp/nestjs-better-auth';
+import * as types from 'types/types';
 import { CreateLeaveDto } from './dto/create-leave.dto';
 import { UpdateLeaveDto } from './dto/update-leave.dto';
 import { LeaveService } from './leave.service';
@@ -15,14 +18,20 @@ import { LeaveService } from './leave.service';
 export class LeaveController {
   constructor(private readonly leaveService: LeaveService) {}
 
-  @Post()
+  @Post('create-leave-request')
   create(@Body() createLeaveDto: CreateLeaveDto) {
     return this.leaveService.create(createLeaveDto);
   }
 
-  @Get()
-  findAll() {
-    return this.leaveService.findAll();
+  @Roles([
+    types.Role.admin,
+    types.Role.hr,
+    types.Role.supervisor,
+    types.Role.superAdmin,
+  ])
+  @Get('stats')
+  findStats(@Req() req: types.AuthenticatedRequest) {
+    return this.leaveService.findStats(req.user.role, req.user.id);
   }
 
   @Get(':id')

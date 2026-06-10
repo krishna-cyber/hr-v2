@@ -1,5 +1,15 @@
 import { authClient } from '@/lib/auth-client';
 
+interface Step {
+  id: number;
+  name: string;
+}
+
+export interface StepIndicatorProps {
+  steps: Step[];
+  currentStep: number;
+}
+
 export type SessionUser = User & {
   role: string;
 };
@@ -20,6 +30,19 @@ export enum Role {
   employee = 'employee',
   superAdmin = 'superAdmin',
 }
+
+export const Genders = ['male', 'female', 'other'] as const;
+
+export const BloodGroups = [
+  'A+',
+  'A-',
+  'B+',
+  'B-',
+  'AB+',
+  'AB-',
+  'O+',
+  'O-',
+] as const;
 
 export type MenuItem = {
   label: string;
