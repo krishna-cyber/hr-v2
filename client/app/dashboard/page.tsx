@@ -19,6 +19,7 @@ import {
   StickyNoteCheck,
   UserPen,
   UserPlus,
+  UserRoundX,
   Users,
   UserStar,
   Zap,
@@ -260,12 +261,72 @@ const page = async () => {
       </div>
     );
   } else {
-    return <p>Employee dashboard</p>;
+    // Employee View
+    const actions = [
+      { label: 'Request Leave', path: '/leave', color: 'bg-blue-500' },
+      { label: 'View Profile', path: '/profile', color: 'bg-green-500' },
+      { label: 'Leave History', path: '/leave-history', color: 'bg-amber-500' },
+      {
+        label: 'Notifications',
+        path: '/notifications',
+        color: 'bg-purple-500',
+      },
+    ];
+    return (
+      <div className="space-y-6">
+        {/* Dashboard Header Section */}
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
+              Welcome back, {data?.user.name}! 👋
+            </h1>
+            <p className="text-muted-foreground mt-1">
+              Here’s an overview of your leave balance and recent activity.
+            </p>
+          </div>
+          <Button asChild className="dark:text-white">
+            <Link href="dashboard/leave">
+              <UserRoundX className="mr-2" />
+              Request Leave
+            </Link>
+          </Button>
+        </div>
+        {/* <LeaveBalanceCards leaveBalance={aggregatedLeaveBalance} /> */}
+
+        {/* Two-column grid for the main widgets */}
+        <div className="grid gap-6 lg:grid-cols-2 items-start">
+          {/* <RecentRequests recentRequests={recentRequests} />
+          <NotificationsWidget /> */}
+        </div>
+
+        {/* <UpcomingLeaves upcomingLeaves={upcomingLeaves} /> */}
+        {/* Quick Actions  */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Quick Actions</CardTitle>
+            <CardDescription>Common tasks you can perform</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {actions.map((action) => (
+                <Link key={action.label} href={action.path}>
+                  <div className="flex items-center gap-3 p-4 rounded-lg border hover:bg-muted/50 transition-colors cursor-pointer">
+                    <div className={`h-3 w-3 rounded-full ${action.color}`} />
+                    <span className="text-sm font-medium">{action.label}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 };
 
 export default page;
 
+// Quick Actions Card Component
 function QuickActionCard({ role }: Readonly<{ role: string }>) {
   return (
     <Card>

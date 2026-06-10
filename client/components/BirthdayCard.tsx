@@ -2,66 +2,6 @@ import { UpcommingBirthday } from '@/types/types';
 import dayjs from 'dayjs';
 import { Cake } from 'lucide-react';
 import { headers } from 'next/headers';
-import React from 'react';
-
-export const upcomingBirthdays: UpcommingBirthday[] = [
-  {
-    _id: 'EMP001',
-    name: 'Krishna Tiwari',
-    birthday: '2026-06-12',
-    department: 'Engineering',
-    avatar: 'https://i.pravatar.cc/150?img=1',
-  },
-  {
-    _id: 'EMP002',
-    name: 'Aarav Sharma',
-    birthday: '2026-06-15',
-    department: 'Human Resources',
-    avatar: 'https://i.pravatar.cc/150?img=2',
-  },
-  {
-    _id: 'EMP003',
-    name: 'Priya Karki',
-    birthday: '2026-06-18',
-    department: 'Finance',
-    avatar: 'https://i.pravatar.cc/150?img=3',
-  },
-  {
-    _id: 'EMP004',
-    name: 'Sanjay Thapa',
-    birthday: '2026-06-22',
-    department: 'Marketing',
-    avatar: 'https://i.pravatar.cc/150?img=4',
-  },
-  {
-    _id: 'EMP005',
-    name: 'Anisha Gurung',
-    birthday: '2026-06-25',
-    department: 'Operations',
-    avatar: 'https://i.pravatar.cc/150?img=5',
-  },
-  {
-    _id: 'EMP006',
-    name: 'Rohan Adhikari',
-    birthday: '2026-06-28',
-    department: 'Engineering',
-    avatar: 'https://i.pravatar.cc/150?img=6',
-  },
-  {
-    _id: 'EMP007',
-    name: 'Sneha Joshi',
-    birthday: '2026-07-01',
-    department: 'Sales',
-    avatar: 'https://i.pravatar.cc/150?img=7',
-  },
-  {
-    _id: 'EMP008',
-    name: 'Bikash Rai',
-    birthday: '2026-07-04',
-    department: 'Customer Support',
-    avatar: 'https://i.pravatar.cc/150?img=8',
-  },
-];
 
 const BirthdayCard = async () => {
   const response = await fetch(
