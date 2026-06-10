@@ -82,10 +82,6 @@ export class EnvironmentVariables {
   SLACK_BOT_TOKEN!: string;
 
   @IsString()
-  @IsNotEmpty({ message: 'slack app token is required' })
-  SLACK_APP_TOKEN!: string;
-
-  @IsString()
   @IsNotEmpty({ message: 'slack channel id is required' })
   SLACK_CHANNEL_ID!: string;
 
