@@ -11,7 +11,7 @@ import {
 import DocumentStep from './DocumentStep';
 import EmploymentStep from './EmploymentStep';
 import { PersonalStep } from './PersonalStep';
-import StepIndicator from './StepIndicator';
+import { Pattern } from './Stepper';
 
 export const employeeSignup = defineStepper(
   [
@@ -28,17 +28,11 @@ export const employeeSignup = defineStepper(
 );
 
 const EmployeeSignup = () => {
-  const stepper = employeeSignup.useStepper();
-
-  const currentStep = stepper.current.id;
-  const steps = stepper.steps.map((step) => ({
-    id: step.id,
-    name: step.title,
-  }));
-
   return (
     <employeeSignup.Provider>
-      <StepIndicator steps={steps} currentStep={+currentStep} />
+      {/* Step indicator */}
+      <Pattern />
+
       <Card>
         <CardContent className="pt-6">
           <SignUpFlow />
