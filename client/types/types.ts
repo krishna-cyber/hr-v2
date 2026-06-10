@@ -6,7 +6,7 @@ export type SessionUser = User & {
 
 export type User = typeof authClient.$Infer.Session.user;
 export interface UpcommingBirthday {
-  id: string;
+  _id: string;
   name: string;
   birthday: string;
   department: string;
