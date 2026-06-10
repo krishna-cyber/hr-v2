@@ -1,4 +1,27 @@
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { WebClient } from '@slack/web-api';
+import { SlackController } from './slack.controller';
+import { SlackService } from './slack.service';
 
-@Module({})
+@Module({
+  controllers: [SlackController],
+  providers: [
+    {
+      provide: 'SLACK_SERVICE',
+      useFactory: (configService: ConfigService) => {
+        const token = configService.get<string>('SLACK_BOT_TOKEN');
+
+        //use bot token here
+
+        console.log('SLACK_BOT_TOKEN:', token); // Debug log to check if the token is being retrieved correctly
+        const slackService = new WebClient(token);
+        return slackService;
+      },
+      inject: [ConfigService],
+    },
+    SlackService,
+  ],
+  exports: [SlackService],
+})
 export class SlackModule {}

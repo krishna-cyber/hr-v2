@@ -11,8 +11,9 @@ import { LeaveModule } from './leave/leave.module';
 import { MailModule } from './mail/mail.module';
 import { MailService } from './mail/mail.service';
 import { MongodbModule } from './mongodb.module';
-import { SlackModule } from './slack/slack.module';
+
 import { AdminModule } from './admin/admin.module';
+import { SlackModule } from './slack/slack.module';
 
 @Module({
   imports: [
