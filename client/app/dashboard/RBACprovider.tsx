@@ -2,7 +2,7 @@
 'use client';
 import { MenuGroup } from '@/types/types';
 import { notFound, usePathname } from 'next/navigation';
-import React, { AriaRole } from 'react';
+import React from 'react';
 
 interface RBACProviderProps {
   role: string;
