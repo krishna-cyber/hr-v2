@@ -25,8 +25,6 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  //TODO:step3:  check authorization
-
   return NextResponse.next();
 }
 
