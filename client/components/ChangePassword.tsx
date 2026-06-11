@@ -40,6 +40,7 @@ const changePasswordSchema = z
   });
 
 const ChangePassword = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const form = useForm<z.infer<typeof changePasswordSchema>>({
     resolver: zodResolver(changePasswordSchema),
     defaultValues: {
@@ -75,6 +76,7 @@ const ChangePassword = () => {
   };
 
   const onSubmit = async (data: z.infer<typeof changePasswordSchema>) => {
+    setLoading(true);
     await authClient.changePassword({
       revokeOtherSessions: true,
       currentPassword: data.currentPassword,
@@ -82,6 +84,7 @@ const ChangePassword = () => {
       fetchOptions: {
         onSuccess(context) {
           toast.success('Password updated successfully!');
+          form.reset();
         },
         onError(error) {
           toast.error(error.error.message || 'Failed to update password');
@@ -89,6 +92,7 @@ const ChangePassword = () => {
         },
       },
     });
+    setLoading(false);
   };
 
   const strengthInfo = getStrengthInfo(passwordStrength);
@@ -237,7 +241,7 @@ const ChangePassword = () => {
           </Field>
         )}
       />
-      <Button size={'lg'} className="w-full" type="submit">
+      <Button disabled={loading} size={'lg'} className="w-full" type="submit">
         Change Password
       </Button>
     </form>
