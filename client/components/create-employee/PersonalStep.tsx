@@ -28,7 +28,20 @@ export function PersonalStep() {
 
   const form = useForm<PersonalInfoFormData>({
     resolver: zodResolver(personalInfoSchema),
-    defaultValues: stepper.data.get('1') ?? {},
+    defaultValues: stepper.data.get('1') ?? {
+      firstname: '',
+      middlename: '',
+      lastname: '',
+      email: '',
+      contact: '',
+      dob: undefined,
+      emergencyContactName: '',
+      emergencyContactRelation: '',
+      address: '',
+      bloodGroup: undefined,
+      emergencyContact: '',
+      gender: undefined,
+    },
   });
 
   const onSubmit = form.handleSubmit(async (data) => {

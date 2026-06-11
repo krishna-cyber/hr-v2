@@ -3,6 +3,7 @@ import {
   IsDateString,
   IsEmail,
   IsEnum,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
@@ -72,15 +73,19 @@ export class CreateEmployeeDto {
   salary!: number;
 
   @IsString()
+  @IsNotEmpty()
   bankAccount!: string;
 
   @IsString()
+  @IsNotEmpty()
   bankName!: string;
 
   @IsString()
+  @IsNotEmpty()
   panNumber!: string;
 
   @IsString()
+  @IsNotEmpty()
   citizenshipNumber!: string;
 
   @IsOptional()
@@ -109,7 +114,6 @@ export class CreateEmployeeDto {
 
   @IsOptional()
   @IsNumber()
-  @Min(1)
   @Max(6)
   internshipDurationMonths?: number;
 

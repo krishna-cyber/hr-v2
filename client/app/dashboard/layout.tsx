@@ -29,8 +29,9 @@ import {
   UserX,
 } from 'lucide-react';
 import { headers } from 'next/headers';
+import RBACProvider from './RBACprovider';
 
-const menuItems: MenuGroup[] = [
+export const menuItems: MenuGroup[] = [
   {
     label: 'Overview',
     roles: [
@@ -271,38 +272,41 @@ const layout = async ({
     <SidebarProvider
       style={{ '--sidebar-width-icon': '5rem' } as React.CSSProperties}
     >
-      <div className="flex min-h-screen w-screen bg-background">
-        <Sidebar collapsible="icon" className="border-r">
-          {/* Logo */}
-          <SidebarHeader className="border-b border-sidebar-border">
-            <SidebarLogo />
-          </SidebarHeader>
+      {/* To control access to different parts of the app based on user roles */}
+      <RBACProvider role={data?.user?.role} menuItems={menuItems}>
+        <div className="flex min-h-screen w-screen bg-background">
+          <Sidebar collapsible="icon" className="border-r">
+            {/* Logo */}
+            <SidebarHeader className="border-b border-sidebar-border">
+              <SidebarLogo />
+            </SidebarHeader>
 
-          {/* Navigation */}
-          <SidebarContent className="px-3">
-            <SidebarNav menuItems={filteredMenuItems} />
-          </SidebarContent>
+            {/* Navigation */}
+            <SidebarContent className="px-3">
+              <SidebarNav menuItems={filteredMenuItems} />
+            </SidebarContent>
 
-          {/* Footer User Menu */}
-          <SidebarFooter className="border-t border-sidebar-border p-2">
-            <SidebarUserMenu />
-          </SidebarFooter>
+            {/* Footer User Menu */}
+            <SidebarFooter className="border-t border-sidebar-border p-2">
+              <SidebarUserMenu />
+            </SidebarFooter>
 
-          <SidebarRail />
-        </Sidebar>
+            <SidebarRail />
+          </Sidebar>
 
-        {/* Main */}
-        <SidebarInset className="flex flex-col flex-1">
-          {/* Top Header */}
-          {data?.user && <AppHeader user={data.user} />}
+          {/* Main */}
+          <SidebarInset className="flex flex-col flex-1">
+            {/* Top Header */}
+            {data?.user && <AppHeader user={data.user} />}
 
-          {/* Main Content */}
-          <main className="flex-1 overflow-auto p-4 md:p-6 lg:p-8">
-            {/* <main className=""> */}
-            {children}
-          </main>
-        </SidebarInset>
-      </div>
+            {/* Main Content */}
+            <main className="flex-1 overflow-auto p-4 md:p-6 lg:p-8">
+              {/* <main className=""> */}
+              {children}
+            </main>
+          </SidebarInset>
+        </div>
+      </RBACProvider>
     </SidebarProvider>
   );
 };

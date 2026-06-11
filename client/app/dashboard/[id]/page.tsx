@@ -1,7 +1,7 @@
-import { notFound } from "next/navigation"
+import { notFound } from 'next/navigation';
 
 const Page = () => {
-  notFound()
-}
+  notFound();
+};
 
-export default Page
+export default Page;

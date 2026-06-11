@@ -4,6 +4,7 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { AuthService } from '@thallesp/nestjs-better-auth';
 import generatePassword from 'generate-password';
@@ -22,6 +23,7 @@ export class AdminService {
     @InjectModel(Employee.name) private readonly employeeModel: Model<Employee>,
     private readonly authService: AuthService,
     private readonly mailService: MailService,
+    private readonly configService: ConfigService,
   ) {}
 
   // creates a new employee
@@ -56,7 +58,7 @@ export class AdminService {
         body: {
           email: createEmployeeDto.email,
           password: generatedPassword,
-          name: createEmployeeDto.email.split('@')[0],
+          name: createEmployeeDto.name,
           image: '',
         },
       });
@@ -69,11 +71,18 @@ export class AdminService {
         },
       );
 
+      console.log(
+        'email',
+        createEmployeeDto.email,
+        'password',
+        generatedPassword,
+      );
+
       await this.mailService.sendWelcomeEmail(createEmployeeDto.email, {
         firstName: createEmployeeDto.name,
         email: createEmployeeDto.email,
         password: generatedPassword,
-        loginUrl: `${process.env.FRONTEND_URL}/login`,
+        loginUrl: `${this.configService.get('CLIENT_URL')}/login`,
       });
 
       return {

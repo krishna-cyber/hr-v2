@@ -439,7 +439,12 @@ const EmploymentStep = () => {
         </div>
       </form>
       <div className="flex justify-between">
-        <Button type="button" variant="outline" className="dark:text-white">
+        <Button
+          type="button"
+          onClick={() => stepper.goTo('1')}
+          variant="outline"
+          className="dark:text-white"
+        >
           Previous
         </Button>
         <Button type="button" onClick={onSubmit} className="dark:text-white">

@@ -11,6 +11,7 @@ import {
 import DocumentStep from './DocumentStep';
 import EmploymentStep from './EmploymentStep';
 import { PersonalStep } from './PersonalStep';
+import ReviewForm from './ReviewForm';
 import { Pattern } from './Stepper';
 
 export const employeeSignup = defineStepper(
@@ -48,7 +49,7 @@ function SignUpFlow() {
     '1': () => <PersonalStep />,
     '2': () => <EmploymentStep />,
     '3': () => <DocumentStep />,
-    '4': () => <>Review step</>,
+    '4': () => <ReviewForm />,
   });
 }
 export default EmployeeSignup;

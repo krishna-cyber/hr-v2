@@ -13,6 +13,7 @@ import { MailService } from './mail/mail.service';
 import { MongodbModule } from './mongodb.module';
 
 import { AdminModule } from './admin/admin.module';
+import { FileUploadModule } from './multer.module';
 import { SlackModule } from './slack/slack.module';
 
 @Module({
@@ -42,6 +43,7 @@ import { SlackModule } from './slack/slack.module';
       }),
       inject: [ConfigService, getConnectionToken(), MailService], //Ensure that the correct connection is injected
     }),
+    FileUploadModule,
     SlackModule,
     MailModule,
     LeaveModule,
