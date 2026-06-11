@@ -1,7 +1,6 @@
 import { headers } from 'next/headers';
-import { unauthorized } from 'next/navigation';
 import { NextRequest, NextResponse } from 'next/server';
-import { menuItems } from './app/dashboard/layout';
+
 import { authClient } from './lib/auth-client';
 
 export async function proxy(request: NextRequest) {
