@@ -1,4 +1,7 @@
 import { email, z } from 'zod';
+
+const allowedImageTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
 const trimmedString = z.string().trim();
 
 const numericString = z
@@ -147,11 +150,51 @@ export const documentsSchema = z.object({
     .min(5, 'PAN number must be at least 5 digits')
     .max(30, 'PAN number must be less than 20 digits'),
 
-  citizenshipFrontPhoto: trimmedString.optional(),
-  citizenshipBackPhoto: trimmedString.optional(),
-  panPhoto: trimmedString.optional(),
-  profilePhoto: trimmedString.optional(),
-  signaturePhoto: trimmedString.optional(),
+  citizenshipFrontPhoto: z
+    .instanceof(File)
+    .refine((file: File) => file.size <= 5 * 1024 * 1024, {
+      message: 'File size must be less than 5MB',
+    })
+    .refine((file: File) => allowedImageTypes.includes(file.type), {
+      message: 'Invalid file type. Please upload a JPEG, PNG, or WebP image.',
+    })
+    .optional(),
+  citizenshipBackPhoto: z
+    .instanceof(File)
+    .refine((file: File) => file.size <= 5 * 1024 * 1024, {
+      message: 'File size must be less than 5MB',
+    })
+    .refine((file: File) => allowedImageTypes.includes(file.type), {
+      message: 'Invalid file type. Please upload a JPEG, PNG, or WebP image.',
+    })
+    .optional(),
+  panPhoto: z
+    .instanceof(File)
+    .refine((file: File) => file.size <= 5 * 1024 * 1024, {
+      message: 'File size must be less than 5MB',
+    })
+    .refine((file: File) => allowedImageTypes.includes(file.type), {
+      message: 'Invalid file type. Please upload a JPEG, PNG, or WebP image.',
+    })
+    .optional(),
+  profilePhoto: z
+    .instanceof(File)
+    .refine((file: File) => file.size <= 5 * 1024 * 1024, {
+      message: 'File size must be less than 5MB',
+    })
+    .refine((file: File) => allowedImageTypes.includes(file.type), {
+      message: 'Invalid file type. Please upload a JPEG, PNG, or WebP image.',
+    })
+    .optional(),
+  signaturePhoto: z
+    .instanceof(File)
+    .refine((file: File) => file.size <= 5 * 1024 * 1024, {
+      message: 'File size must be less than 5MB',
+    })
+    .refine((file: File) => allowedImageTypes.includes(file.type), {
+      message: 'Invalid file type. Please upload a JPEG, PNG, or WebP image.',
+    })
+    .optional(),
 });
 
 export type PersonalInfoFormData = z.infer<typeof personalInfoSchema>;

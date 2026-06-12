@@ -2,13 +2,15 @@
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SendHorizontal, UserRoundX } from 'lucide-react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import z from 'zod';
 import { Button } from './ui/button';
 import {
@@ -18,19 +20,49 @@ import {
   CardHeader,
   CardTitle,
 } from './ui/card';
+import { Field, FieldError, FieldLabel } from './ui/field';
+import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 
-const leaveFormSchema = z.object({
-  leaveType: z.enum(['sick', 'casual', 'work_from_home'], {
-    error: 'Please select a valid leave type',
-  }),
-});
+const leaveFormSchema = z
+  .object({
+    leaveCategory: z.enum(['sick', 'casual', 'work_from_home'], {
+      error: 'Please select a valid leave type',
+    }),
+    leaveType: z.enum(['paid', 'unpaid'], {
+      error: 'Please select a valid leave category',
+    }),
+    durationType: z.enum(['full_day', 'half_day', 'multiple_days'], {
+      error: 'Please select a valid duration type',
+    }),
+    halfDayPeriod: z.enum(['first_half', 'second_half'], {
+      error: 'Please select a valid half day period',
+    }),
+    reason: z.string().min(10, 'Reason must be at least 10 characters long'),
+  })
+  .superRefine((value, context) => {
+    //logic to be added here for dynamic field validation
+  });
 
 const LeaveForm = () => {
   const form = useForm<z.infer<typeof leaveFormSchema>>({
     resolver: zodResolver(leaveFormSchema),
+    defaultValues: {
+      reason: '',
+      leaveCategory: 'casual',
+      leaveType: 'paid',
+      durationType: 'full_day',
+      halfDayPeriod: undefined,
+    },
   });
+
+  const durationType = form.watch('durationType');
+
+  const leaveSubmit = (data: z.infer<typeof leaveFormSchema>) => {
+    console.log('Form Data:', data);
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -42,59 +74,119 @@ const LeaveForm = () => {
       </CardHeader>
       <CardContent>
         {/* Leave Request Form */}
-        {/* <form onSubmit={leaveSubmit} className="space-y-4"> */}
-        <form className="space-y-4">
+
+        <form
+          id="leave-form"
+          onSubmit={form.handleSubmit(leaveSubmit)}
+          className="space-y-4"
+        >
           <div className="grid gap-4 sm:grid-cols-2">
             {/* Leave Type */}
-            <div className="space-y-2">
-              <Label htmlFor="leave-type">Leave Type</Label>
-              {/* <Select value={leaveType} onValueChange={setLeaveType}> */}
-              <Select>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select leave type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="sick">Sick Leave</SelectItem>
-                  <SelectItem value="casual">Casual Leave</SelectItem>
-                  <SelectItem value="work_from_home">Work from Home</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <Controller
+              control={form.control}
+              name="leaveType"
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-leave-leaveType">
+                    Leave Type
+                  </FieldLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="w-full max-w-48">
+                      <SelectValue placeholder="Select leave type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Leave Type</SelectLabel>
+                        <SelectItem value="sick">Sick Leave</SelectItem>
+                        <SelectItem value="casual">Casual Leave</SelectItem>
+                        <SelectItem value="work_from_home">
+                          Work from Home
+                        </SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
             {/* Duration Type */}
-            <div className="space-y-2">
-              <Label htmlFor="duration-type">Duration</Label>
-              {/* <Select value={durationType} onValueChange={setDurationType}> */}
-              <Select>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select duration" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="full_day">Full Day (1 day)</SelectItem>
-                  <SelectItem value="half_day">Half Day (0.5 day)</SelectItem>
-                  <SelectItem value="multiple_days">Multiple Days</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <Controller
+              control={form.control}
+              name="durationType"
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-leave-durationType">
+                    Duration
+                  </FieldLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="w-full max-w-48">
+                      <SelectValue placeholder="Select duration" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Duration</SelectLabel>
+                        <SelectItem value="full_day">
+                          Full Day (1 day)
+                        </SelectItem>
+                        <SelectItem value="half_day">
+                          Half Day (0.5 day)
+                        </SelectItem>
+                        <SelectItem value="multiple_days">
+                          Multiple Days
+                        </SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
             {/* Leave Category */}
-            <div className="space-y-2">
-              <Label htmlFor="paid-type">Leave Category</Label>
-              <Select
-              // value={leaveCategory}
-              // onValueChange={setLeaveCategory}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select category" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="paid">Paid Leave</SelectItem>
-                  {/* {leaveType !== 'work_from_home' && (
-                        <SelectItem value="unpaid">Unpaid Leave</SelectItem>
-                      )} */}
-                </SelectContent>
-              </Select>
-            </div>
+
+            <Controller
+              control={form.control}
+              name="leaveCategory"
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-leave-leaveCategory">
+                    Leave Category
+                  </FieldLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="w-full max-w-48">
+                      <SelectValue placeholder="Select leave type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Leave Type</SelectLabel>
+                        <SelectItem value="paid">Paid Leave</SelectItem>
+                        {form.getValues('leaveCategory') !==
+                          'work_from_home' && (
+                          <SelectItem value="unpaid">Unpaid Leave</SelectItem>
+                        )}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
 
             {/* Start Date */}
             <div className="space-y-2">
@@ -122,102 +214,62 @@ const LeaveForm = () => {
             </div>
 
             {/* End Date */}
-            {/* {durationType === 'multiple_days' && (
-                  <div className="space-y-2">
-                    <Label>End Date</Label>
-                    <div className="relative">
-                      <NepaliDatePicker
-                        inputClassName="form-control w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-0 focus:border-input"
-                        className="w-full"
-                        value={endBs ?? ''}
-                        onChange={(value: string) => {
-                          setEndBs(value);
-                          const adDate = bsToAdConverter(value);
-                          if (!isNaN(adDate.getTime())) setEndDate(adDate);
-                        }}
-                        options={{ calenderLocale: 'en', valueLocale: 'en' }}
-                      />
-                      {!endBs && (
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground pointer-events-none">
-                          Select End Date (BS)
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                )} */}
+            {durationType === 'multiple_days' && (
+              <div className="space-y-2">
+                <Label>End Date</Label>
+                <div className="relative">
+                  {/* End date picker */}
+                  {/* <NepaliDatePicker
+                    inputClassName="form-control w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-0 focus:border-input"
+                    className="w-full"
+                    value={endBs ?? ''}
+                    onChange={(value: string) => {
+                      setEndBs(value);
+                      const adDate = bsToAdConverter(value);
+                      if (!isNaN(adDate.getTime())) setEndDate(adDate);
+                    }}
+                    options={{ calenderLocale: 'en', valueLocale: 'en' }}
+                  />
+                  {!endBs && (
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground pointer-events-none">
+                      Select End Date (BS)
+                    </span>
+                  )} */}
+                </div>
+              </div>
+            )}
 
             {/* Half Day Period */}
-            {/* {durationType === 'half_day' && (
-                  <div className="space-y-2">
-                    <Label htmlFor="half-day-period">Half Day Period</Label>
-                    <Select
-                      value={halfDayPeriod}
-                      onValueChange={setHalfDayPeriod}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select period" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="first_half">First Half</SelectItem>
-                        <SelectItem value="second_half">Second Half</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )} */}
+            {durationType === 'half_day' && (
+              <p>Half day selection first half and second half</p>
+            )}
           </div>
-
-          {/* Summary */}
-          {/* {startDate && (
-                <div className="rounded-md bg-primary/5 border border-primary/10 p-3 text-sm space-y-1">
-                  <p className="text-muted-foreground">
-                    📅 {durationType === 'half_day' && 'Half day leave on '}
-                    {durationType === 'full_day' && 'Full day leave on '}
-                    {durationType === 'multiple_days' && 'Leave from '}
-                    <span className="font-medium text-foreground">
-                      {startBs}
-                      {durationType === 'multiple_days' && endBs && (
-                        <> to {endBs}</>
-                      )}
-                      {' (BS)'}
-                    </span>
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    AD: {format(startDate, 'PPP')}
-                    {durationType === 'multiple_days' && endDate && (
-                      <> to {format(endDate, 'PPP')}</>
-                    )}
-                  </p>
-                  {durationType === 'half_day' && halfDayPeriod && (
-                    <p className="text-muted-foreground">
-                      ⏰{' '}
-                      {halfDayPeriod === 'first_half'
-                        ? '9:00 AM - 1:30 PM (Morning)'
-                        : '1:30 PM - 6:00 PM (Afternoon)'}
-                    </p>
-                  )}
-                  <p className="text-muted-foreground">
-                    📊 Total Leave:{' '}
-                    <span className="font-medium text-foreground">
-                      {calculateLeaveDays()} day(s)
-                    </span>
-                  </p>
-                </div>
-              )} */}
 
           {/* Reason */}
           <div className="space-y-2">
-            <Label htmlFor="reason">Reason</Label>
-            <Textarea
-              id="reason"
-              placeholder="Briefly describe the reason for your leave..."
-              rows={4}
-              value={''}
-              //   onChange={(e) => setReason(e.target.value)}
+            <Controller
+              control={form.control}
+              name="reason"
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-leave-reason">Reason</FieldLabel>
+                  <Textarea
+                    id="form-leave-reason"
+                    placeholder="Briefly describe the reason for your leave..."
+                    rows={4}
+                    {...field}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
             />
           </div>
 
           <Button
             type="submit"
+            form="leave-form"
             className="w-full dark:text-white cursor-pointer"
           >
             <SendHorizontal className="mr-2 h-4 w-4" />

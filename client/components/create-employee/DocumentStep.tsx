@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import ImageUpload from '../ImagePreview';
 import { Button } from '../ui/button';
 import { Field, FieldError, FieldLabel } from '../ui/field';
 import { Input } from '../ui/input';
@@ -73,6 +74,58 @@ const DocumentStep = () => {
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
+              </Field>
+            )}
+          />
+
+          {/* Citizenship Front Photo */}
+          <Controller
+            name="citizenshipFrontPhoto"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel>Citizenship Front Photo </FieldLabel>
+                <ImageUpload value={field.value} onChange={field.onChange} />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+          {/* Citizenship Back Photo */}
+          <Controller
+            name="citizenshipBackPhoto"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel>Citizenship Back Photo </FieldLabel>
+                <ImageUpload value={field.value} onChange={field.onChange} />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+          {/* Citizenship PAN Photo */}
+          <Controller
+            name="panPhoto"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel>Citizenship PAN Photo </FieldLabel>
+                <ImageUpload value={field.value} onChange={field.onChange} />
+              </Field>
+            )}
+          />
+
+          {/* Signature Photo */}
+          <Controller
+            name="signaturePhoto"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel>Signature Photo</FieldLabel>
+                <ImageUpload value={field.value} onChange={field.onChange} />
               </Field>
             )}
           />
