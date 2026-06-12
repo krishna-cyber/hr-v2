@@ -8,9 +8,12 @@ import {
   Post,
   Put,
   Request,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthService, Roles } from '@thallesp/nestjs-better-auth';
 
+import { FileFieldsInterceptor } from '@nestjs/platform-express/multer/interceptors/file-fields.interceptor';
 import mongoose from 'mongoose';
 import { type AuthenticatedRequest, Role } from 'types/types';
 import { AdminService } from './admin.service';
@@ -27,7 +30,32 @@ export class AdminController {
 
   //completed
   @Post('/create-employee')
-  async create(@Body() createEmployeeDto: CreateEmployeeDto) {
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'citizenshipFrontPhoto', maxCount: 1 },
+      {
+        name: 'citizenshipBackPhoto',
+        maxCount: 1,
+      },
+      {
+        name: 'panPhoto',
+        maxCount: 1,
+      },
+      {
+        name: 'profilePhoto',
+        maxCount: 1,
+      },
+      {
+        name: 'signaturePhoto',
+        maxCount: 1,
+      },
+    ]),
+  )
+  async create(
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @Body() createEmployeeDto: CreateEmployeeDto,
+  ) {
+    console.log('Received files:', files);
     return this.adminService.createEmployee(createEmployeeDto);
   }
 
