@@ -9,7 +9,6 @@ const multerOptions = diskStorage({
 
     const dir = './uploads';
 
-    console.log('Checking if uploads directory exists...');
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
     }

@@ -48,7 +48,6 @@ export class AdminService {
           'HR already exists. Only one HR is allowed.',
         );
       }
-      console.log(files);
 
       const employee = await new this.employeeModel({
         dob: createEmployeeDto.dob,
@@ -110,13 +109,6 @@ export class AdminService {
           employeeId: employee._id,
           role: createEmployeeDto.role,
         },
-      );
-
-      console.log(
-        'email',
-        createEmployeeDto.email,
-        'password',
-        generatedPassword,
       );
 
       await this.mailService.sendWelcomeEmail(createEmployeeDto.email, {
@@ -182,7 +174,6 @@ export class AdminService {
       // this.employeeModel.countDocuments({ employeeStatus: 'active' }),
     ]);
 
-    console.log(superVisorCount, employeeStats);
     return 'This action returns dashboard stats';
   }
 
