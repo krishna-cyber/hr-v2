@@ -10,7 +10,7 @@ import { AuthService } from '@thallesp/nestjs-better-auth';
 import generatePassword from 'generate-password';
 import mongoose, { Model } from 'mongoose';
 import { MailService } from 'src/mail/mail.service';
-import { Role } from 'types/types';
+import { CreateEmployeeFiles, Role } from 'types/types';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { Employee } from './schemas/employee.schema';
@@ -27,7 +27,10 @@ export class AdminService {
   ) {}
 
   // creates a new employee
-  async createEmployee(createEmployeeDto: CreateEmployeeDto) {
+  async createEmployee(
+    createEmployeeDto: CreateEmployeeDto,
+    files: CreateEmployeeFiles,
+  ) {
     try {
       const [existingUser, hrExist] = await Promise.all([
         this.userModel.findOne({ email: createEmployeeDto.email }),
@@ -45,8 +48,46 @@ export class AdminService {
           'HR already exists. Only one HR is allowed.',
         );
       }
+      console.log(files);
 
-      const employee = await new this.employeeModel(createEmployeeDto).save();
+      const employee = await new this.employeeModel({
+        dob: createEmployeeDto.dob,
+        gender: createEmployeeDto.gender,
+        contact: createEmployeeDto.contact,
+        emergencyContact: createEmployeeDto.emergencyContact,
+        emergencyContactRelation: createEmployeeDto.emergencyContactRelation,
+        emergencyContactName: createEmployeeDto.emergencyContactName,
+        bloodGroup: createEmployeeDto.bloodGroup,
+        address: createEmployeeDto.address,
+        employmentType: createEmployeeDto.employmentType,
+        department: createEmployeeDto.department,
+        dateOfJoining: createEmployeeDto.dateOfJoining,
+        employmentStartDate: createEmployeeDto.employmentStartDate,
+        employmentStartAs: createEmployeeDto.employmentStartAs,
+        employeeStatus: createEmployeeDto.employeeStatus,
+        salary: createEmployeeDto.salary,
+        bankAccount: createEmployeeDto.bankAccount,
+        bankName: createEmployeeDto.bankName,
+        panNumber: createEmployeeDto.panNumber,
+        citizenshipNumber: createEmployeeDto.citizenshipNumber,
+
+        //if these files are present, add their paths to the employee document
+        ...(files.citizenshipFrontPhoto && {
+          citizenshipFrontPhoto: files.citizenshipFrontPhoto[0].path,
+        }),
+        ...(files.citizenshipBackPhoto && {
+          citizenshipBackPhoto: files.citizenshipBackPhoto[0].path,
+        }),
+        ...(files.panPhoto && { panPhoto: files.panPhoto[0].path }),
+        ...(files.profilePhoto && {
+          profilePhoto: files.profilePhoto[0].path,
+        }),
+        ...(files.signaturePhoto && {
+          signaturePhoto: files.signaturePhoto[0].path,
+        }),
+        ...(createEmployeeDto.github && { github: createEmployeeDto.github }),
+        internshipDurationMonths: createEmployeeDto.internshipDurationMonths,
+      }).save();
 
       const generatedPassword = generatePassword.generate({
         length: 10,

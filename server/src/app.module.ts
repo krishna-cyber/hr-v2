@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getConnectionToken } from '@nestjs/mongoose';
 import { AuthModule } from '@thallesp/nestjs-better-auth';
 import { Connection } from 'mongoose';
+import { AdminModule } from './admin/admin.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { auth } from './auth';
@@ -11,8 +12,6 @@ import { LeaveModule } from './leave/leave.module';
 import { MailModule } from './mail/mail.module';
 import { MailService } from './mail/mail.service';
 import { MongodbModule } from './mongodb.module';
-
-import { AdminModule } from './admin/admin.module';
 import { FileUploadModule } from './multer.module';
 import { SlackModule } from './slack/slack.module';
 

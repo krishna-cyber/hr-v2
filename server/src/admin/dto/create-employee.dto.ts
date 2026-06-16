@@ -1,64 +1,71 @@
+import { Transform } from 'class-transformer';
 import {
-  IsBoolean,
   IsDateString,
   IsEmail,
   IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  IsPositive,
   IsString,
   Max,
-  Min,
 } from 'class-validator';
 import { Department, EmployeeStatus, EmployeeType, Role } from 'types/types';
 
 export class CreateEmployeeDto {
   @IsEmail()
+  @IsNotEmpty()
   email!: string;
 
   @IsString()
+  @IsNotEmpty()
   name!: string;
 
   @IsDateString()
+  @IsNotEmpty()
   dob!: Date;
 
   @IsEnum(['male', 'female', 'other'])
+  @IsNotEmpty()
   gender!: string;
 
   @IsString()
+  @IsNotEmpty()
   contact!: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
   emergencyContact?: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
   emergencyContactRelation?: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
   emergencyContactName?: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsEnum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'])
   bloodGroup?: string;
 
   @IsEnum(Role)
+  @IsOptional()
   role!: string;
 
   @IsString()
+  @IsNotEmpty()
   address!: string;
 
   @IsEnum(EmployeeType)
-  employeeType!: EmployeeType;
+  employmentType!: EmployeeType;
 
   @IsEnum(Department)
   department!: Department;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsDateString()
-  dateOfJoining?: Date;
+  dateOfJoining!: Date;
 
   @IsDateString()
   employmentStartDate!: Date;
@@ -69,7 +76,10 @@ export class CreateEmployeeDto {
   @IsEnum(EmployeeStatus)
   employeeStatus!: EmployeeStatus;
 
+  @Transform(({ value }) => +value)
   @IsNumber()
+  @IsPositive()
+  @IsNotEmpty()
   salary!: number;
 
   @IsString()
@@ -89,35 +99,29 @@ export class CreateEmployeeDto {
   citizenshipNumber!: string;
 
   @IsOptional()
-  @IsString()
   citizenshipFrontPhoto?: string;
 
   @IsOptional()
-  @IsString()
   citizenshipBackPhoto?: string;
 
   @IsOptional()
-  @IsString()
   profilePhoto?: string;
 
   @IsOptional()
-  @IsString()
   panPhoto?: string;
-
-  @IsOptional()
-  @IsString()
-  github?: string;
 
   @IsOptional()
   @IsString()
   signaturePhoto?: string;
 
   @IsOptional()
+  @IsString()
+  github?: string;
+
   @IsNumber()
+  @IsPositive()
+  @IsOptional()
+  @Transform(({ value }) => (value ? +value : undefined))
   @Max(6)
   internshipDurationMonths?: number;
-
-  @IsOptional()
-  @IsBoolean()
-  internshipEndingReminderSent?: boolean;
 }

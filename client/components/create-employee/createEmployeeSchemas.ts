@@ -90,28 +90,24 @@ export const employmentSchema = z.object({
     },
   ),
 
-  dateOfJoining: z
-    .date({
-      error: 'Date of joining is required',
-    })
-    .optional(),
+  dateOfJoining: z.date({
+    error: 'Date of joining is required',
+  }),
 
-  employmentStartDate: z
-    .date({
-      error: 'Employment start date is required',
-    })
-    .optional(),
+  employmentStartDate: z.date({
+    error: 'Employment start date is required',
+  }),
 
-  employmentStartAs: z
-    .enum(['full-time', 'part-time', 'contract', 'intern', 'probation'], {
+  employmentStartAs: z.enum(
+    ['full-time', 'part-time', 'contract', 'intern', 'probation'],
+    {
       error: 'Please select employment type',
-    })
-    .optional(),
-
+    },
+  ),
   role: z.enum(['employee', 'hr', 'supervisor', 'admin', 'superAdmin'], {
     error: 'Please select role',
   }),
-  employeeStatus: z.string().optional(),
+  employeeStatus: z.string().default('active'),
   terminatedDate: z.date().optional(),
 
   supervisorId: trimmedString.optional(),
@@ -122,13 +118,10 @@ export const employmentSchema = z.object({
       error: 'Salary is required',
     })
     .gt(0, 'Salary must be greater than 0')
-    .lt(500000, 'Salary must be less than 500000')
-    .optional()
-    .refine((val) => val !== undefined, {
-      message: 'Salary is required',
-    }),
-
-  bankAccount: numericString
+    .lt(500000, 'Salary must be less than 500000'),
+  bankAccount: z
+    .string()
+    .trim()
     .min(3, 'Bank account must be at least 3 digits')
     .max(30, 'Bank account must be less than 30 digits'),
   bankName: trimmedString
@@ -200,3 +193,7 @@ export const documentsSchema = z.object({
 export type PersonalInfoFormData = z.infer<typeof personalInfoSchema>;
 export type EmploymentFormData = z.infer<typeof employmentSchema>;
 export type DocumentsFormData = z.infer<typeof documentsSchema>;
+
+export type EmployeeSignupData = PersonalInfoFormData &
+  EmploymentFormData &
+  DocumentsFormData;

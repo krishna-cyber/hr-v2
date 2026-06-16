@@ -34,7 +34,7 @@ export class Employee {
   address!: string;
 
   @Prop({ required: true, type: String, enum: EmployeeType })
-  employeeType!: string;
+  employmentType!: string;
 
   @Prop({ required: true, type: String, enum: Department })
   department!: string;
@@ -48,7 +48,12 @@ export class Employee {
   @Prop({ type: String, enum: EmployeeType })
   employmentStartAs!: string;
 
-  @Prop({ type: String, required: true, enum: EmployeeStatus })
+  @Prop({
+    type: String,
+    required: true,
+    enum: EmployeeStatus,
+    default: 'active',
+  })
   employeeStatus!: string;
 
   @Prop({ type: Number, required: true })

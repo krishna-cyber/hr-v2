@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import fs from 'node:fs';
@@ -8,6 +8,8 @@ const multerOptions = diskStorage({
     //check if the uploads directory exists, if not create it
 
     const dir = './uploads';
+
+    console.log('Checking if uploads directory exists...');
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
     }
@@ -19,6 +21,8 @@ const multerOptions = diskStorage({
   },
 });
 
+//set this global for the entire app to use the same multer configuration
+@Global()
 @Module({
   imports: [
     MulterModule.register({
@@ -30,5 +34,6 @@ const multerOptions = diskStorage({
   ],
   controllers: [],
   providers: [],
+  exports: [MulterModule],
 })
 export class FileUploadModule {}

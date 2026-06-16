@@ -314,7 +314,7 @@ const EmploymentStep = () => {
           />
 
           {/* Supervisor ID */}
-          <Controller
+          {/* <Controller
             name="supervisorId"
             control={form.control}
             render={({ field, fieldState }) => (
@@ -331,7 +331,7 @@ const EmploymentStep = () => {
                 )}
               </Field>
             )}
-          />
+          /> */}
 
           {/* GitHub */}
           <Controller
@@ -354,26 +354,28 @@ const EmploymentStep = () => {
           />
 
           {/* Internship Duration (Months) */}
-          <Controller
-            name="internshipDurationMonths"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Internship Duration (Months)</FieldLabel>
-                <Input
-                  {...field}
-                  type="number"
-                  aria-invalid={fieldState.invalid}
-                  placeholder="e.g. 3"
-                  autoComplete="off"
-                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
+          {form.watch('employmentType') === 'intern' && (
+            <Controller
+              name="internshipDurationMonths"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Internship Duration (Months)</FieldLabel>
+                  <Input
+                    {...field}
+                    type="number"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="e.g. 3"
+                    autoComplete="off"
+                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          )}
 
           {/* Salary */}
           <Controller

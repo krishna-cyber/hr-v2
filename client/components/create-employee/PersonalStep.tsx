@@ -189,6 +189,7 @@ export function PersonalStep() {
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
+                      captionLayout="dropdown"
                       disabled={(date) => date > new Date()}
                     />
                   </PopoverContent>
@@ -206,7 +207,7 @@ export function PersonalStep() {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel>Emergency Contact Name</FieldLabel>
+                <FieldLabel>Emergency Contact Name *</FieldLabel>
                 <Input
                   {...field}
                   aria-invalid={fieldState.invalid}

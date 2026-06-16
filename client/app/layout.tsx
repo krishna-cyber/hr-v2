@@ -1,6 +1,7 @@
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/components/ui/theme-provider';
 import type { Metadata } from 'next';
+import 'react-photo-view/dist/react-photo-view.css';
 import './globals.css';
 import QueryProvider from './query-provider';
 

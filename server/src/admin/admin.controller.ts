@@ -13,14 +13,14 @@ import {
 } from '@nestjs/common';
 import { AuthService, Roles } from '@thallesp/nestjs-better-auth';
 
-import { FileFieldsInterceptor } from '@nestjs/platform-express/multer/interceptors/file-fields.interceptor';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import mongoose from 'mongoose';
-import { type AuthenticatedRequest, Role } from 'types/types';
+import * as types from 'types/types';
 import { AdminService } from './admin.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 
-@Roles([Role.admin, Role.hr, Role.superAdmin])
+@Roles([types.Role.admin, types.Role.hr, types.Role.superAdmin])
 @Controller('api/admin')
 export class AdminController {
   constructor(
@@ -52,11 +52,11 @@ export class AdminController {
     ]),
   )
   async create(
-    @UploadedFiles() files: Array<Express.Multer.File>,
     @Body() createEmployeeDto: CreateEmployeeDto,
+    @UploadedFiles()
+    files: types.CreateEmployeeFiles,
   ) {
-    console.log('Received files:', files);
-    return this.adminService.createEmployee(createEmployeeDto);
+    return this.adminService.createEmployee(createEmployeeDto, files);
   }
 
   @Get()
@@ -66,7 +66,7 @@ export class AdminController {
 
   //TODO
   @Get('/dashboard/stats')
-  getDashboardStats(@Request() req: AuthenticatedRequest) {
+  getDashboardStats(@Request() req: types.AuthenticatedRequest) {
     const user = req.user; //Get from authenticated user
     return this.adminService.getDashboardStats(user);
   }

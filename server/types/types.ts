@@ -76,3 +76,11 @@ export interface AuthenticatedRequest extends ExpressRequest {
   user: User;
   session: AuthInstance['$Infer']['Session']['session'];
 }
+
+export type CreateEmployeeFiles = {
+  citizenshipFrontPhoto?: Express.Multer.File[];
+  citizenshipBackPhoto?: Express.Multer.File[];
+  panPhoto?: Express.Multer.File[];
+  profilePhoto?: Express.Multer.File[];
+  signaturePhoto?: Express.Multer.File[];
+};
