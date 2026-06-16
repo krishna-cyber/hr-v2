@@ -3,6 +3,7 @@ import {
   HttpException,
   Injectable,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
@@ -18,6 +19,7 @@ import { User } from './schemas/user.schema';
 
 @Injectable()
 export class AdminService {
+  private readonly logger = new Logger(AdminService.name);
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
     @InjectModel(Employee.name) private readonly employeeModel: Model<Employee>,
@@ -126,7 +128,8 @@ export class AdminService {
       if (error instanceof HttpException) {
         throw error;
       }
-      console.log(error);
+
+      this.logger.error('Failed to create employee', error);
       throw new InternalServerErrorException('Failed to create employee', {
         cause: error,
       });
@@ -148,8 +151,8 @@ export class AdminService {
       if (error instanceof HttpException) {
         throw error;
       }
-      console.log(error);
-      throw new InternalServerErrorException('Failed to create employee', {
+      this.logger.error('Failed to update employee', error);
+      throw new InternalServerErrorException('Failed to update employee', {
         cause: error,
       });
     }
@@ -256,7 +259,7 @@ export class AdminService {
       if (error instanceof HttpException) {
         throw error;
       }
-      console.log(error);
+      this.logger.error('Failed to get upcoming birthdays', error);
       throw new InternalServerErrorException('Failed to create employee', {
         cause: error,
       });

@@ -13,12 +13,6 @@ export const auth = (
   connection: Connection,
   mailService: MailService,
 ) => {
-  console.log('Initializing authentication with the following configuration:');
-  console.log(`BASE_URL: ${configService.get('BASE_URL')}`);
-
-  console.log(configService.get('GOOGLE_CLIENT_ID'));
-  console.log(configService.get('GOOGLE_CLIENT_SECRET'));
-
   if (connection?.db) {
     // better auth instance
     return betterAuth({
@@ -85,9 +79,8 @@ export const auth = (
       // Plugins
       plugins: [
         emailOTP({
-          async sendVerificationOTP({ email, otp, type }) {
+          async sendVerificationOTP({ _email, _otp, type }) {
             if (type === 'change-email') {
-              console.log(`Sending OTP for email change to ${email}: ${otp}`);
               await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate email sending delay
             }
           },

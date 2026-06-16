@@ -21,7 +21,6 @@ export class SlackService {
     });
 
     if (response.ok && response.user?.id) {
-      console.log('User ID:', response.user.id); // Debug log to check the retrieved user information
       await this.slackClient.chat.postMessage({
         channel: response.user?.id, // Use the conversation channel ID if available, otherwise fallback to user ID
         as_user: true,

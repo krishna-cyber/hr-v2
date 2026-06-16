@@ -13,8 +13,6 @@ import { SlackService } from './slack.service';
         const token = configService.get<string>('SLACK_BOT_TOKEN');
 
         //use bot token here
-
-        console.log('SLACK_BOT_TOKEN:', token); // Debug log to check if the token is being retrieved correctly
         const slackService = new WebClient(token);
         return slackService;
       },
