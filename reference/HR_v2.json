@@ -317,30 +317,52 @@
     },
     "/api/admin/create-employee": {
       "post": {
-        "summary": "Create an employee",
-        "description": "Creates a new employee with all personal, employment, and document details.",
+        "summary": "Create Employee",
         "operationId": "createEmployee",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
-          "description": "Complete employee details payload",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
+                "required": [
+                  "email",
+                  "name",
+                  "dob",
+                  "gender",
+                  "contact",
+                  "address",
+                  "employmentType",
+                  "department",
+                  "employmentStartDate",
+                  "employmentStartAs",
+                  "employeeStatus",
+                  "salary",
+                  "bankAccount",
+                  "bankName",
+                  "panNumber",
+                  "citizenshipNumber"
+                ],
                 "properties": {
                   "email": {
                     "type": "string",
-                    "format": "email",
-                    "description": "Employee's email address (must be unique)"
+                    "format": "email"
                   },
                   "name": {
-                    "type": "string",
-                    "description": "Full name of the employee"
+                    "type": "string"
                   },
                   "dob": {
                     "type": "string",
                     "format": "date",
-                    "description": "Date of birth (YYYY-MM-DD)"
+                    "description": "Date"
                   },
                   "gender": {
                     "type": "string",
@@ -348,24 +370,19 @@
                       "male",
                       "female",
                       "other"
-                    ],
-                    "description": "Gender of the employee"
+                    ]
                   },
                   "contact": {
-                    "type": "string",
-                    "description": "Primary contact number"
+                    "type": "string"
                   },
                   "emergencyContact": {
-                    "type": "string",
-                    "description": "Emergency contact number"
-                  },
-                  "emergencyContactRelation": {
-                    "type": "string",
-                    "description": "Relationship with emergency contact"
+                    "type": "string"
                   },
                   "emergencyContactName": {
-                    "type": "string",
-                    "description": "Name of emergency contact person"
+                    "type": "string"
+                  },
+                  "emergencyContactRelation": {
+                    "type": "string"
                   },
                   "bloodGroup": {
                     "type": "string",
@@ -378,65 +395,13 @@
                       "AB-",
                       "O+",
                       "O-"
-                    ],
-                    "description": "Blood group of the employee"
-                  },
-                  "role": {
-                    "type": "string",
-                    "enum": [
-                      "admin",
-                      "hr",
-                      "supervisor",
-                      "employee",
-                      "superAdmin"
-                    ],
-                    "description": "Role assigned to the employee"
+                    ]
                   },
                   "address": {
-                    "type": "string",
-                    "description": "Residential address"
-                  },
-                  "employeeType": {
-                    "type": "string",
-                    "description": "Type of employment (full_time, part_time, contract, intern, remote)",
-                    "enum": [
-                      "full-time",
-                      "part-time",
-                      "contract",
-                      "intern",
-                      "probation"
-                    ],
-                    "x-apidog-enum": [
-                      {
-                        "value": "full-time",
-                        "name": "",
-                        "description": ""
-                      },
-                      {
-                        "value": "part-time",
-                        "name": "",
-                        "description": ""
-                      },
-                      {
-                        "value": "contract",
-                        "name": "",
-                        "description": ""
-                      },
-                      {
-                        "value": "intern",
-                        "name": "",
-                        "description": ""
-                      },
-                      {
-                        "value": "probation",
-                        "name": "",
-                        "description": ""
-                      }
-                    ]
+                    "type": "string"
                   },
                   "department": {
                     "type": "string",
-                    "description": "Department assigned (engineering, hr, sales, marketing, finance, operations)",
                     "enum": [
                       "hr",
                       "AI/ML",
@@ -447,181 +412,92 @@
                       "operations",
                       "finance",
                       "other"
-                    ],
-                    "x-apidog-enum": [
-                      {
-                        "value": "hr",
-                        "name": "",
-                        "description": ""
-                      },
-                      {
-                        "value": "AI/ML",
-                        "name": "",
-                        "description": ""
-                      },
-                      {
-                        "value": "Full Stack Developer",
-                        "name": "",
-                        "description": ""
-                      },
-                      {
-                        "value": "QA",
-                        "name": "",
-                        "description": ""
-                      },
-                      {
-                        "value": "marketing",
-                        "name": "",
-                        "description": ""
-                      },
-                      {
-                        "value": "sales",
-                        "name": "",
-                        "description": ""
-                      },
-                      {
-                        "value": "operations",
-                        "name": "",
-                        "description": ""
-                      },
-                      {
-                        "value": "finance",
-                        "name": "",
-                        "description": ""
-                      },
-                      {
-                        "value": "other",
-                        "name": "",
-                        "description": ""
-                      }
                     ]
                   },
                   "dateOfJoining": {
                     "type": "string",
-                    "format": "date",
-                    "description": "Date when employee joined the company"
+                    "format": "date"
                   },
                   "employmentStartDate": {
                     "type": "string",
-                    "format": "date",
-                    "description": "Official employment start date"
+                    "format": "date"
                   },
                   "employmentStartAs": {
                     "type": "string",
-                    "description": "Position/role at start of employment",
                     "enum": [
                       "full-time",
                       "part-time",
                       "contract",
                       "intern",
                       "probation"
-                    ],
-                    "x-apidog-enum": [
-                      {
-                        "value": "full-time",
-                        "name": "",
-                        "description": ""
-                      },
-                      {
-                        "value": "part-time",
-                        "name": "",
-                        "description": ""
-                      },
-                      {
-                        "value": "contract",
-                        "name": "",
-                        "description": ""
-                      },
-                      {
-                        "value": "intern",
-                        "name": "",
-                        "description": ""
-                      },
-                      {
-                        "value": "probation",
-                        "name": "",
-                        "description": ""
-                      }
                     ]
                   },
                   "employeeStatus": {
                     "type": "string",
-                    "description": "Current employment status (active, inactive, on_leave, terminated)"
+                    "enum": [
+                      "active",
+                      "inactive",
+                      "on_leave",
+                      "terminated"
+                    ]
                   },
                   "salary": {
-                    "type": "number",
-                    "description": "Annual or monthly salary amount"
+                    "type": "number"
                   },
                   "bankAccount": {
-                    "type": "string",
-                    "description": "Bank account number"
+                    "type": "string"
                   },
                   "bankName": {
-                    "type": "string",
-                    "description": "Name of the bank"
+                    "type": "string"
                   },
                   "panNumber": {
-                    "type": "string",
-                    "description": "PAN (Permanent Account Number) for tax purposes"
+                    "type": "string"
                   },
                   "citizenshipNumber": {
-                    "type": "string",
-                    "description": "Citizenship/identification number"
-                  },
-                  "citizenshipFrontPhoto": {
-                    "type": "string",
-                    "description": "URL or path to citizenship front photo"
-                  },
-                  "citizenshipBackPhoto": {
-                    "type": "string",
-                    "description": "URL or path to citizenship back photo"
-                  },
-                  "profilePhoto": {
-                    "type": "string",
-                    "description": "URL or path to employee profile photo"
-                  },
-                  "panPhoto": {
-                    "type": "string",
-                    "description": "URL or path to PAN card photo"
+                    "type": "string"
                   },
                   "github": {
-                    "type": "string",
-                    "description": "GitHub profile URL or username"
-                  },
-                  "signaturePhoto": {
-                    "type": "string",
-                    "description": "URL or path to employee signature"
+                    "type": "string"
                   },
                   "internshipDurationMonths": {
                     "type": "integer",
                     "minimum": 1,
-                    "maximum": 6,
-                    "description": "Duration of internship in months (applicable for interns only)"
+                    "maximum": 6
                   },
                   "internshipEndingReminderSent": {
-                    "type": "boolean",
-                    "description": "Flag indicating if internship ending reminder has been sent"
+                    "type": "boolean"
+                  },
+                  "citizenshipFrontPhoto": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "citizenshipBackPhoto": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "panPhoto": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "profilePhoto": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "signaturePhoto": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "employmentType": {
+                    "type": "string",
+                    "enum": [
+                      "full-time",
+                      "part-time",
+                      "contract",
+                      "intern",
+                      "probation"
+                    ]
                   }
                 },
-                "required": [
-                  "email",
-                  "name",
-                  "dob",
-                  "gender",
-                  "contact",
-                  "address",
-                  "role",
-                  "employeeType",
-                  "department",
-                  "employmentStartDate",
-                  "employmentStartAs",
-                  "employeeStatus",
-                  "salary",
-                  "bankAccount",
-                  "bankName",
-                  "panNumber",
-                  "citizenshipNumber"
-                ],
                 "x-apidog-orders": [
                   "email",
                   "name",
@@ -629,12 +505,11 @@
                   "gender",
                   "contact",
                   "emergencyContact",
-                  "emergencyContactRelation",
                   "emergencyContactName",
+                  "emergencyContactRelation",
                   "bloodGroup",
-                  "role",
                   "address",
-                  "employeeType",
+                  "employmentType",
                   "department",
                   "dateOfJoining",
                   "employmentStartDate",
@@ -645,76 +520,21 @@
                   "bankName",
                   "panNumber",
                   "citizenshipNumber",
+                  "github",
+                  "internshipDurationMonths",
+                  "internshipEndingReminderSent",
                   "citizenshipFrontPhoto",
                   "citizenshipBackPhoto",
-                  "profilePhoto",
                   "panPhoto",
-                  "github",
-                  "signaturePhoto",
-                  "internshipDurationMonths",
-                  "internshipEndingReminderSent"
+                  "profilePhoto",
+                  "signaturePhoto"
                 ]
-              },
-              "examples": {
-                "Full Time Employee": {
-                  "summary": "Create a full-time software engineer",
-                  "value": {
-                    "email": "john.doe@company.com",
-                    "name": "John Doe",
-                    "dob": "1995-06-15",
-                    "gender": "male",
-                    "contact": "+977-9851234567",
-                    "emergencyContact": "+977-9812345678",
-                    "emergencyContactRelation": "Spouse",
-                    "emergencyContactName": "Jane Doe",
-                    "bloodGroup": "O+",
-                    "role": "employee",
-                    "address": "Kathmandu, Nepal",
-                    "employeeType": "full_time",
-                    "department": "engineering",
-                    "dateOfJoining": "2024-01-15",
-                    "employmentStartDate": "2024-01-15",
-                    "employmentStartAs": "Software Engineer",
-                    "employeeStatus": "active",
-                    "salary": 1200000,
-                    "bankAccount": "1234567890",
-                    "bankName": "NMB Bank",
-                    "panNumber": "123456789",
-                    "citizenshipNumber": "01-01-1234567",
-                    "github": "johndoe",
-                    "profilePhoto": "/uploads/profile/john_doe.jpg"
-                  }
-                },
-                "Intern Employee": {
-                  "summary": "Create an intern employee",
-                  "value": {
-                    "email": "alice.smith@company.com",
-                    "name": "Alice Smith",
-                    "dob": "2000-03-22",
-                    "gender": "female",
-                    "contact": "+977-9841234567",
-                    "address": "Lalitpur, Nepal",
-                    "role": "employee",
-                    "employeeType": "intern",
-                    "department": "marketing",
-                    "employmentStartDate": "2024-03-01",
-                    "employmentStartAs": "Marketing Intern",
-                    "employeeStatus": "active",
-                    "salary": 300000,
-                    "bankAccount": "9876543210",
-                    "bankName": "Prabhu Bank",
-                    "panNumber": "987654321",
-                    "citizenshipNumber": "02-03-7654321",
-                    "internshipDurationMonths": 3,
-                    "internshipEndingReminderSent": false
-                  }
-                }
               }
             }
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Employee created successfully",
             "content": {
               "application/json": {
@@ -723,7 +543,7 @@
                   "properties": {
                     "statusCode": {
                       "type": "integer",
-                      "example": 200
+                      "example": 201
                     },
                     "message": {
                       "type": "string",
@@ -733,7 +553,7 @@
                       "type": "object",
                       "properties": {
                         "id": {
-                          "type": "integer"
+                          "type": "string"
                         },
                         "email": {
                           "type": "string"
@@ -741,33 +561,17 @@
                         "name": {
                           "type": "string"
                         },
-                        "dob": {
-                          "type": "string",
-                          "format": "date"
-                        },
-                        "gender": {
-                          "type": "string"
-                        },
-                        "contact": {
-                          "type": "string"
-                        },
-                        "address": {
-                          "type": "string"
-                        },
                         "role": {
-                          "type": "string"
-                        },
-                        "employeeType": {
                           "type": "string"
                         },
                         "department": {
                           "type": "string"
                         },
-                        "employeeStatus": {
+                        "employeeType": {
                           "type": "string"
                         },
-                        "salary": {
-                          "type": "number"
+                        "employeeStatus": {
+                          "type": "string"
                         },
                         "createdAt": {
                           "type": "string",
@@ -776,31 +580,12 @@
                       }
                     }
                   }
-                },
-                "example": {
-                  "statusCode": 200,
-                  "message": "Employee created successfully",
-                  "data": {
-                    "id": 1,
-                    "email": "john.doe@company.com",
-                    "name": "John Doe",
-                    "dob": "1995-06-15",
-                    "gender": "male",
-                    "contact": "+977-9851234567",
-                    "address": "Kathmandu, Nepal",
-                    "role": "employee",
-                    "employeeType": "full_time",
-                    "department": "engineering",
-                    "employeeStatus": "active",
-                    "salary": 1200000,
-                    "createdAt": "2024-01-15T10:30:00.000Z"
-                  }
                 }
               }
             }
           },
           "400": {
-            "description": "Bad Request - Missing required fields or validation failed",
+            "description": "Validation failed",
             "content": {
               "application/json": {
                 "example": {
@@ -815,25 +600,30 @@
             }
           },
           "401": {
-            "description": "Unauthorized - Authentication required"
+            "description": "Unauthorized"
           },
           "403": {
-            "description": "Forbidden - Insufficient permissions (Admin/SuperAdmin only)"
+            "description": "Forbidden - Admin/SuperAdmin only"
           },
           "409": {
-            "description": "Conflict - Email already exists",
+            "description": "Email already exists",
             "content": {
               "application/json": {
                 "example": {
                   "statusCode": 409,
-                  "message": "Employee with email john.doe@company.com already exists",
+                  "message": "Employee with this email already exists",
                   "error": "Conflict"
                 }
               }
             }
+          },
+          "413": {
+            "description": "File size exceeds limit"
+          },
+          "415": {
+            "description": "Unsupported Media Type - must be multipart/form-data"
           }
-        },
-        "security": []
+        }
       }
     },
     "/api/admin/update-employee/{id}": {
@@ -1323,6 +1113,376 @@
           }
         },
         "description": "Sorted data received based on date of birth"
+      }
+    },
+    "/api/slack/test": {
+      "get": {
+        "summary": "New endpoint",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/api/leave/stats": {
+      "get": {
+        "summary": "Get all the leave statistics",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "approved": {
+                          "type": "number"
+                        },
+                        "pending": {
+                          "type": "number"
+                        },
+                        "rejected": {
+                          "type": "number"
+                        }
+                      },
+                      "x-apidog-orders": [
+                        "approved",
+                        "pending",
+                        "rejected"
+                      ],
+                      "required": [
+                        "approved",
+                        "pending",
+                        "rejected"
+                      ]
+                    }
+                  },
+                  "x-apidog-orders": [
+                    "message",
+                    "data"
+                  ],
+                  "required": [
+                    "message",
+                    "data"
+                  ]
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Leave stats fetched successfully",
+                      "data": {
+                        "approved": 0,
+                        "pending": 0,
+                        "rejected": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/leave/create-leave-request": {
+      "post": {
+        "summary": "Create a new leave request",
+        "description": "Creates a new leave request for the authenticated user. Users can request half-day or full-day leaves with optional paid/unpaid status.",
+        "operationId": "createLeaveRequest",
+        "tags": [
+          "Leave"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Leave request details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "leaveType": {
+                    "type": "string",
+                    "enum": [
+                      "annual",
+                      "sick",
+                      "casual",
+                      "bereavement",
+                      "maternity",
+                      "paternity",
+                      "unpaid"
+                    ],
+                    "description": "Type of leave being requested",
+                    "example": "annual"
+                  },
+                  "durationType": {
+                    "type": "string",
+                    "enum": [
+                      "half_day",
+                      "full_day"
+                    ],
+                    "description": "Whether the leave is for a half day or full day",
+                    "example": "full_day"
+                  },
+                  "startDate": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Start date of the leave (YYYY-MM-DD)",
+                    "example": "2026-06-15"
+                  },
+                  "endDate": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "End date of the leave (YYYY-MM-DD). Required for full-day leaves",
+                    "example": "2026-06-20"
+                  },
+                  "reason": {
+                    "type": "string",
+                    "maxLength": 500,
+                    "description": "Reason for the leave request (optional)",
+                    "example": "Family vacation"
+                  },
+                  "halfDayPeriod": {
+                    "type": "string",
+                    "enum": [
+                      "morning",
+                      "afternoon"
+                    ],
+                    "description": "Required for half-day leaves - specifies which half of the day",
+                    "example": "morning"
+                  },
+                  "isPaid": {
+                    "type": "boolean",
+                    "description": "Whether the leave is paid or unpaid (default: true)",
+                    "example": true,
+                    "default": true
+                  }
+                },
+                "required": [
+                  "leaveType",
+                  "durationType",
+                  "startDate"
+                ],
+                "additionalProperties": false
+              },
+              "examples": {
+                "Full Day Paid Leave": {
+                  "summary": "Request a full day paid leave",
+                  "value": {
+                    "leaveType": "annual",
+                    "durationType": "full_day",
+                    "startDate": "2026-06-15",
+                    "endDate": "2026-06-20",
+                    "reason": "Annual family vacation",
+                    "isPaid": true
+                  }
+                },
+                "Half Day Leave": {
+                  "summary": "Request a half day leave (morning)",
+                  "value": {
+                    "leaveType": "sick",
+                    "durationType": "half_day",
+                    "startDate": "2026-06-10",
+                    "halfDayPeriod": "morning",
+                    "reason": "Doctor's appointment",
+                    "isPaid": true
+                  }
+                },
+                "Unpaid Leave": {
+                  "summary": "Request an unpaid leave",
+                  "value": {
+                    "leaveType": "unpaid",
+                    "durationType": "full_day",
+                    "startDate": "2026-07-01",
+                    "endDate": "2026-07-05",
+                    "reason": "Personal reasons",
+                    "isPaid": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Leave request created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Leave request created successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "60d21b4667d0d8992e610c85"
+                        },
+                        "userId": {
+                          "type": "string",
+                          "example": "60d21b4667d0d8992e610c86"
+                        },
+                        "leaveType": {
+                          "type": "string",
+                          "example": "annual"
+                        },
+                        "durationType": {
+                          "type": "string",
+                          "example": "full_day"
+                        },
+                        "startDate": {
+                          "type": "string",
+                          "format": "date",
+                          "example": "2026-06-15"
+                        },
+                        "endDate": {
+                          "type": "string",
+                          "format": "date",
+                          "example": "2026-06-20"
+                        },
+                        "reason": {
+                          "type": "string",
+                          "example": "Annual family vacation"
+                        },
+                        "isPaid": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "pending",
+                            "approved",
+                            "rejected"
+                          ],
+                          "example": "pending"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2026-06-10T10:30:00.000Z"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "message": "Leave request created successfully",
+                  "data": {
+                    "_id": "60d21b4667d0d8992e610c85",
+                    "userId": "60d21b4667d0d8992e610c86",
+                    "leaveType": "annual",
+                    "durationType": "full_day",
+                    "startDate": "2026-06-15",
+                    "endDate": "2026-06-20",
+                    "reason": "Annual family vacation",
+                    "isPaid": true,
+                    "status": "pending",
+                    "createdAt": "2026-06-10T10:30:00.000Z"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Missing required fields or validation failed",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Missing Required Fields": {
+                    "value": {
+                      "success": false,
+                      "message": "Leave type and start date are required"
+                    }
+                  },
+                  "Missing End Date": {
+                    "value": {
+                      "success": false,
+                      "message": "End date is required for full-day leaves"
+                    }
+                  },
+                  "Invalid Date Format": {
+                    "value": {
+                      "success": false,
+                      "message": "startDate must be in YYYY-MM-DD format"
+                    }
+                  },
+                  "Past Date": {
+                    "value": {
+                      "success": false,
+                      "message": "startDate cannot be in the past"
+                    }
+                  },
+                  "Overlapping Leave": {
+                    "value": {
+                      "success": false,
+                      "message": "You already have a pending or approved leave request for this period"
+                    }
+                  },
+                  "Insufficient Balance": {
+                    "value": {
+                      "success": false,
+                      "message": "Insufficient leave balance"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "Authentication token is required"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "You do not have permission to create leave requests"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": false,
+                  "message": "Internal server error"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
