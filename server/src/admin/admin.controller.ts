@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Request,
   UploadedFiles,
   UseInterceptors,
@@ -18,6 +19,7 @@ import mongoose from 'mongoose';
 import * as types from 'types/types';
 import { AdminService } from './admin.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
+import { PaginationDTO } from './dto/pagination.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 
 @Roles([types.Role.admin, types.Role.hr, types.Role.superAdmin])
@@ -59,9 +61,10 @@ export class AdminController {
     return this.adminService.createEmployee(createEmployeeDto, files);
   }
 
-  @Get()
-  findAll() {
-    return this.adminService.findAll();
+  @Get('/employees')
+  findAll(@Query() paginationDto: PaginationDTO) {
+    const { page, limit, search } = paginationDto;
+    return this.adminService.findAll(page, limit, search);
   }
 
   //TODO

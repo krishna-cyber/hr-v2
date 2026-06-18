@@ -266,8 +266,29 @@ export class AdminService {
     }
   }
 
-  findAll() {
-    return `This action returns all employees`;
+  async findAll(page: number = 1, limit: number, search: string = '') {
+    try {
+      const filter = {
+        employeeId: { $exists: true, $ne: null },
+        ...(search && {
+          name: { $regex: search, $options: 'i' },
+        }),
+      };
+      //get all the user and only populate the employee details in them, then filter them based on the search query and pagination
+      return await this.userModel
+        .find(filter)
+        .limit(limit)
+        .skip((page - 1) * limit)
+        .populate('employeeId');
+    } catch (error) {
+      this.logger.error('Failed to fetch employees', error);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Failed to fetch employees', {
+        cause: error,
+      });
+    }
   }
 
   findOne(id: number) {

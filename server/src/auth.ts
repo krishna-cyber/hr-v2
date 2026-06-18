@@ -79,7 +79,7 @@ export const auth = (
       // Plugins
       plugins: [
         emailOTP({
-          async sendVerificationOTP({ _email, _otp, type }) {
+          async sendVerificationOTP({ type }) {
             if (type === 'change-email') {
               await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate email sending delay
             }
