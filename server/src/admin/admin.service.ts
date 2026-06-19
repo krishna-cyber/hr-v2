@@ -275,11 +275,21 @@ export class AdminService {
         }),
       };
       //get all the user and only populate the employee details in them, then filter them based on the search query and pagination
-      return await this.userModel
+      const employees = await this.userModel
         .find(filter)
         .limit(limit)
         .skip((page - 1) * limit)
         .populate('employeeId');
+
+      return {
+        message: 'Employees fetched successfully',
+        data: employees,
+        page,
+        pageSize: limit,
+        totalPages: Math.ceil(
+          (await this.userModel.countDocuments(filter)) / limit,
+        ),
+      };
     } catch (error) {
       this.logger.error('Failed to fetch employees', error);
       if (error instanceof HttpException) {

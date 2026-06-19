@@ -10,6 +10,14 @@ export interface StepIndicatorProps {
   currentStep: number;
 }
 
+export enum Role {
+  admin = 'admin',
+  hr = 'hr',
+  supervisor = 'supervisor',
+  employee = 'employee',
+  superAdmin = 'superAdmin',
+}
+
 export type SessionUser = User & {
   role: string;
 };
@@ -21,14 +29,6 @@ export interface UpcommingBirthday {
   birthday: string;
   department: string;
   avatar?: string;
-}
-
-export enum Role {
-  admin = 'admin',
-  hr = 'hr',
-  supervisor = 'supervisor',
-  employee = 'employee',
-  superAdmin = 'superAdmin',
 }
 
 export const Genders = ['male', 'female', 'other'] as const;

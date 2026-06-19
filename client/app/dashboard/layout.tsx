@@ -29,7 +29,9 @@ import {
   UserX,
 } from 'lucide-react';
 import { headers } from 'next/headers';
+import { ErrorBoundary } from 'react-error-boundary';
 import RBACProvider from './RBACprovider';
+import Error from './errors';
 
 export const menuItems: MenuGroup[] = [
   {
@@ -302,7 +304,7 @@ const layout = async ({
             {/* Main Content */}
             <main className="flex-1 overflow-auto p-4 md:p-6 lg:p-8">
               {/* <main className=""> */}
-              {children}
+              <ErrorBoundary fallback={<Error />}>{children}</ErrorBoundary>
             </main>
           </SidebarInset>
         </div>

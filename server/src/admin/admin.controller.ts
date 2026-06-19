@@ -63,8 +63,8 @@ export class AdminController {
 
   @Get('/employees')
   findAll(@Query() paginationDto: PaginationDTO) {
-    const { page, limit, search } = paginationDto;
-    return this.adminService.findAll(page, limit, search);
+    const { page, pageSize, search } = paginationDto;
+    return this.adminService.findAll(page, pageSize, search);
   }
 
   //TODO

@@ -1,6 +1,7 @@
 import { Toaster } from '@/components/ui/sonner';
-import { ThemeProvider } from '@/components/ui/theme-provider';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import type { Metadata } from 'next';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import 'react-photo-view/dist/react-photo-view.css';
 import './globals.css';
 import QueryProvider from './query-provider';
@@ -22,7 +23,11 @@ export default function RootLayout({
       className={`h-full antialiased`}
     >
       <body className="min-h-full flex flex-col ">
-        <QueryProvider>{children}</QueryProvider>
+        <NuqsAdapter>
+          <QueryProvider>
+            <TooltipProvider>{children}</TooltipProvider>
+          </QueryProvider>
+        </NuqsAdapter>
         <Toaster />
       </body>
     </html>
