@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -11,6 +12,8 @@ import {
 import { Roles } from '@thallesp/nestjs-better-auth';
 import * as types from 'types/types';
 
+import mongoose from 'mongoose';
+import { CommentDto } from './dto/comment.dto';
 import { CreateLeaveDto } from './dto/create-leave.dto';
 import { UpdateLeaveDto } from './dto/update-leave.dto';
 import { LeaveService } from './leave.service';
@@ -42,12 +45,37 @@ export class LeaveController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.leaveService.findOne(+id);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new BadRequestException('Invalid leave ID');
+    }
+
+    return this.leaveService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateLeaveDto: UpdateLeaveDto) {
     return this.leaveService.update(+id, updateLeaveDto);
+  }
+
+  @Roles([
+    types.Role.admin,
+    types.Role.hr,
+    types.Role.supervisor,
+    types.Role.superAdmin,
+  ])
+  @Patch('add-comment/:id')
+  addComment(
+    @Param('id') leaveId: string,
+    @Req() req: types.AuthenticatedRequest,
+    @Body() commentDto: CommentDto,
+  ) {
+    if (!mongoose.Types.ObjectId.isValid(leaveId)) {
+      throw new BadRequestException('Invalid leave ID');
+    }
+
+    const { id } = req.user;
+
+    return this.leaveService.addComment(leaveId, commentDto, id);
   }
 
   @Delete(':id')

@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CommentDto } from './dto/comment.dto';
 import { CreateLeaveDto } from './dto/create-leave.dto';
 import { UpdateLeaveDto } from './dto/update-leave.dto';
 import { Leave } from './schemas/leave.schema';
@@ -37,6 +38,37 @@ export class LeaveService {
         throw error;
       }
       throw new InternalServerErrorException('Failed to create leave request', {
+        cause: error,
+      });
+    }
+  }
+
+  async addComment(id: string, commentDto: CommentDto, userId: string) {
+    try {
+      await this.leaveModel.findByIdAndUpdate(id, {
+        $push: {
+          comments: {
+            comment: commentDto.comment,
+            commentedBy: userId, // Replace with actual user ID
+          },
+        },
+      });
+      return {
+        message: 'Comment added successfully',
+        success: true,
+      };
+    } catch (error) {
+      console.log(
+        'Error adding comment to leave request with ID:',
+        id,
+        'Error:',
+        error,
+      );
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      throw new InternalServerErrorException('Failed to add comment', {
         cause: error,
       });
     }
@@ -102,8 +134,30 @@ export class LeaveService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} leave`;
+  async findOne(id: string) {
+    try {
+      const leave = await this.leaveModel
+        .findById(id)
+        .populate('employeeId', 'name email role')
+        .populate({
+          path: 'comments.commentedBy',
+          select: 'name email role',
+        });
+
+      return {
+        message: 'Leave details fetched successfully',
+        data: leave,
+        success: true,
+      };
+    } catch (error) {
+      console.log('Error fetching leave details for ID:', id, 'Error:', error);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Failed to fetch leave details', {
+        cause: error,
+      });
+    }
   }
 
   update(id: number, updateLeaveDto: UpdateLeaveDto) {
