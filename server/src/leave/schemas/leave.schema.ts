@@ -4,6 +4,15 @@ import { LeaveType } from 'types/types';
 
 export type LeaveDocument = HydratedDocument<Leave>;
 
+@Schema({ timestamps: true, _id: false })
+export class Comments {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
+  commentedBy!: string;
+
+  @Prop({ type: String, required: true })
+  comment!: string;
+}
+
 @Schema({ timestamps: true })
 export class Leave {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
@@ -59,8 +68,8 @@ export class Leave {
   @Prop({ type: String, enum: ['first_half', 'second_half'], default: null })
   halfDayPeriod!: string;
 
-  @Prop({ type: [String], default: [] })
-  comments!: string[];
+  @Prop({ type: [Comments], default: [] })
+  comments!: Comments[];
 }
 
 export const LeaveSchema = SchemaFactory.createForClass(Leave);
