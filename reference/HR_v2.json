@@ -1591,6 +1591,16 @@
           }
         }
       }
+    },
+    "/api/leave/{id}": {
+      "get": {
+        "summary": "Get leave details by id",
+        "responses": {
+          "200": {
+            "description": " {\n        message: 'Leave details fetched successfully',\n        data: 'leaveData',\n        success: true,\n      };\n"
+          }
+        }
+      }
     }
   },
   "components": {
