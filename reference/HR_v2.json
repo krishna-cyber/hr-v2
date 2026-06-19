@@ -1556,7 +1556,7 @@
       }
     },
     "/api/leave/add-comment/{id}": {
-      "post": {
+      "patch": {
         "summary": "Adds comment to the leave",
         "responses": {
           "200": {
