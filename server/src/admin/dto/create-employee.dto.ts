@@ -73,6 +73,7 @@ export class CreateEmployeeDto {
   @IsEnum(EmployeeType)
   employmentStartAs!: EmployeeType;
 
+  @IsOptional()
   @IsEnum(EmployeeStatus)
   employeeStatus!: EmployeeStatus;
 
