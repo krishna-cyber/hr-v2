@@ -1555,7 +1555,7 @@
         ]
       }
     },
-    "/api/leave/add-comment/:id": {
+    "/api/leave/add-comment/{id}": {
       "post": {
         "summary": "Adds comment to the leave",
         "responses": {
