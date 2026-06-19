@@ -1,7 +1,10 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Role } from 'types/types';
 import { CreateLeaveDto } from './dto/create-leave.dto';
 import { UpdateLeaveDto } from './dto/update-leave.dto';
 import { Leave } from './schemas/leave.schema';
@@ -11,8 +14,32 @@ export class LeaveService {
   constructor(
     @InjectModel(Leave.name) private readonly leaveModel: Model<Leave>,
   ) {}
-  create(createLeaveDto: CreateLeaveDto) {
-    return 'This action adds a new leave';
+  async create(createLeaveDto: CreateLeaveDto, userId: string) {
+    try {
+      const leave = new this.leaveModel({
+        ...createLeaveDto,
+        employeeId: userId,
+      });
+
+      await leave.save();
+      console.log(
+        'Creating leave request with data:',
+        createLeaveDto,
+        'for user ID:',
+        userId,
+      );
+      return {
+        message: 'Leave request created successfully',
+        success: true,
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Failed to create leave request', {
+        cause: error,
+      });
+    }
   }
 
   //completed

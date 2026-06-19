@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { Roles } from '@thallesp/nestjs-better-auth';
 import * as types from 'types/types';
+
 import { CreateLeaveDto } from './dto/create-leave.dto';
 import { UpdateLeaveDto } from './dto/update-leave.dto';
 import { LeaveService } from './leave.service';
@@ -18,9 +19,14 @@ import { LeaveService } from './leave.service';
 export class LeaveController {
   constructor(private readonly leaveService: LeaveService) {}
 
+  //authenticated users can create leave request
   @Post('create-leave-request')
-  create(@Body() createLeaveDto: CreateLeaveDto) {
-    return this.leaveService.create(createLeaveDto);
+  create(
+    @Body() createLeaveDto: CreateLeaveDto,
+    @Req() req: types.AuthenticatedRequest,
+  ) {
+    const { id } = req.user;
+    return this.leaveService.create(createLeaveDto, id);
   }
 
   @Roles([

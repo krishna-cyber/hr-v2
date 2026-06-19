@@ -1,27 +1,29 @@
+import { Transform } from 'class-transformer';
 import {
   IsBoolean,
   IsDate,
   IsEnum,
-  IsMongoId,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsString,
 } from 'class-validator';
 import { LeaveType } from 'types/types';
+import { Comments } from '../schemas/leave.schema';
 
 export class CreateLeaveDto {
-  @IsMongoId({ message: 'employeeId must be a valid MongoDB ObjectId' })
-  employeeId!: string;
-
   @IsEnum(LeaveType)
   leaveType!: string;
 
   @IsEnum(['full_day', 'half_day', 'multiple_days'])
   durationType!: string;
 
+  @Transform(({ value }) => new Date(value))
   @IsDate()
   startDate!: Date;
 
+  @IsOptional()
+  @Transform(({ value }) => new Date(value))
   @IsDate()
   endDate!: Date;
 
@@ -35,5 +37,6 @@ export class CreateLeaveDto {
   @IsBoolean()
   isPaid!: boolean;
 
-  comments!: string[];
+  @IsOptional()
+  comments!: Comments[];
 }
