@@ -436,9 +436,43 @@
                     "type": "string",
                     "enum": [
                       "active",
-                      "inactive",
-                      "on_leave",
-                      "terminated"
+                      "onLeave",
+                      "terminated",
+                      "noticePeriod",
+                      "resigned",
+                      "work_from_home"
+                    ],
+                    "x-apidog-enum": [
+                      {
+                        "value": "active",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "onLeave",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "terminated",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "noticePeriod",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "resigned",
+                        "name": "",
+                        "description": ""
+                      },
+                      {
+                        "value": "work_from_home",
+                        "name": "",
+                        "description": ""
+                      }
                     ]
                   },
                   "salary": {
@@ -1481,6 +1515,52 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/admin/employees": {
+      "get": {
+        "summary": "Fetches all employees from database",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        },
+        "description": "Fetches all employees from database",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "number"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/leave/add-comment/:id": {
+      "post": {
+        "summary": "Adds comment to the leave",
+        "responses": {
+          "200": {
+            "description": "Successful response"
           }
         }
       }
