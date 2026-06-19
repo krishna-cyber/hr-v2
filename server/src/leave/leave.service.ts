@@ -142,7 +142,8 @@ export class LeaveService {
         .populate({
           path: 'comments.commentedBy',
           select: 'name email role',
-        });
+        })
+        .sort({ 'comments.createdAt': 1 });
 
       return {
         message: 'Leave details fetched successfully',
