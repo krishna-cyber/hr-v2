@@ -24,7 +24,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { parseAsInteger, parseAsString, useQueryStates } from 'nuqs';
+import { parseAsInteger, useQueryStates } from 'nuqs';
 import { useEffect, useState } from 'react';
 import { roles } from '../data/data';
 import { type Employee } from '../data/schema';
@@ -127,9 +127,6 @@ export function EmployeesTable() {
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  // Clamp the URL page if the server reports fewer pages than we're currently on
-  // (e.g. after a status filter shrinks the result set). Depends on the
-  // primitive pageCount, not the `table` object, so it doesn't refire every render.
   useEffect(() => {
     if (pageCount > 0 && page > pageCount) {
       setQuery({ page: pageCount });
