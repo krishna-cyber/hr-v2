@@ -1601,6 +1601,16 @@
           }
         }
       }
+    },
+    "/api/admin/promote-to-supervisor/{userId}}": {
+      "get": {
+        "summary": "Promotes to supervisor",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
     }
   },
   "components": {
