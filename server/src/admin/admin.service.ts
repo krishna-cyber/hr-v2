@@ -184,8 +184,23 @@ export class AdminService {
     return `This action returns the supervisor of employee with id ${userId}`;
   }
 
-  promoteToSupervisor(userId: number) {
-    return `This action promotes employee with id ${userId} to supervisor`;
+  async promoteToSupervisor(userId: number) {
+    try {
+      await this.userModel.findByIdAndUpdate(userId, { role: Role.supervisor });
+      return {
+        message: 'Employee promoted to supervisor successfully',
+        success: true,
+      };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      this.logger.error('Failed to promote employee to supervisor', error);
+      throw new InternalServerErrorException(
+        'Failed to promote employee to supervisor',
+        { cause: error },
+      );
+    }
   }
 
   demoteFromSupervisor(userId: number) {

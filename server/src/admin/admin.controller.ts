@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   Query,
+  Req,
   Request,
   UploadedFiles,
   UseInterceptors,
@@ -67,6 +68,26 @@ export class AdminController {
     return this.adminService.findAll(page, pageSize, search);
   }
 
+  @Roles([types.Role.admin, types.Role.hr, types.Role.superAdmin])
+  @Get('/promote-to-supervisor/:userId')
+  promoteToSupervisor(
+    @Param('userId') userId: string,
+    @Req() req: types.AuthenticatedRequest,
+  ) {
+    if (mongoose.Types.ObjectId.isValid(userId)) {
+      throw new BadRequestException('Invalid user ID format');
+    }
+
+    const { id } = req.user;
+    if (userId === id.toString()) {
+      throw new BadRequestException(
+        'You cannot promote yourself to supervisor',
+      );
+    }
+
+    return this.adminService.promoteToSupervisor(+userId);
+  }
+
   //TODO
   @Get('/dashboard/stats')
   getDashboardStats(@Request() req: types.AuthenticatedRequest) {
@@ -82,14 +103,6 @@ export class AdminController {
   @Get('/employee-supervisor/:userId')
   getEmployeeSupervisor(@Param('userId') userId: string) {
     return this.adminService.getEmployeeSupervisor(+userId);
-  }
-
-  @Post('/promote-to-supervisor/:userId')
-  promoteToSupervisor(@Param('userId') userId: string) {
-    if (mongoose.Types.ObjectId.isValid(userId)) {
-      throw new BadRequestException('Invalid user ID format');
-    }
-    return this.adminService.promoteToSupervisor(+userId);
   }
 
   @Post('/demote-from-supervisor/:userId')
