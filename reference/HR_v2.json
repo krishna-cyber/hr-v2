@@ -1562,6 +1562,33 @@
           "200": {
             "description": "Successful response"
           }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comment": {
+                    "type": "string"
+                  }
+                },
+                "x-apidog-orders": [
+                  "comment"
+                ],
+                "required": [
+                  "comment"
+                ]
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "comment": "Can you clarify more about the leave"
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
